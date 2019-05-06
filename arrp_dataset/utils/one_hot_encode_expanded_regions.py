@@ -20,6 +20,8 @@ def one_hot_encode_expanded_regions(target: str):
             region=region,
             target=target
         )
+        if os.path.exists(path):
+            continue
         expand_region_path = "{target}/expanded_regions/{region}.fa".format(
             region=region,
             target=target
