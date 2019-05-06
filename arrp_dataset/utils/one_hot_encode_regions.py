@@ -18,7 +18,7 @@ def one_hot_encode_regions(target: str):
     os.makedirs(
         "{target}/one_hot_encoded_classes".format(target=target), exist_ok=True)
     for region in get_cell_lines(target):
-        region_classes = "{target}/classes/{region}_200bp_Classes.txt".format(
+        region_classes = "{target}/classes/{region}.csv".format(
             region=region,
             target=target
         )

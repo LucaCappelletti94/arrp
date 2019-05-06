@@ -13,7 +13,7 @@ def load_cellular_variables(target:str, cell_line:str):
 
 def load_nucleotides_sequences(target:str, cell_line:str):
     return pd.read_csv(
-        "{target}/one_hot_encoded_expanded_regions/{cell_line}_{k}_mers.csv".format(
+        "{target}/one_hot_encoded_expanded_regions/{cell_line}.csv".format(
             target=target,
             cell_line=cell_line,
             k=1,

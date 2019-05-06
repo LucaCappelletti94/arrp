@@ -13,7 +13,7 @@ def expand_regions(target: str, genome: str):
             region=region,
             target=target
         )
-        region_path = "{target}/regions/{region}_200bp_Regions.bed".format(
+        region_path = "{target}/regions/{region}.bed".format(
             region=region,
             target=target
         )
