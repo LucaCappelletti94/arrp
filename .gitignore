@@ -1,5 +1,6 @@
 dataset/\.DS_Store
 
+
 \.DS_Store
 
 \.ipynb_checkpoints/
@@ -7,3 +8,10 @@ dataset/\.DS_Store
 __pycache__/
 
 \.vscode/
+*.fa
+*.fai
+dataset/one_hot_encoded_expanded_regions/
+
+dataset/one_hot_encoded_classes/
+
+dataset/data/*.csv

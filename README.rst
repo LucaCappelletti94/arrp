@@ -22,13 +22,13 @@ Dependencies
 ------------------------------
 This package will use the package bedtools_ to elaborate the bed files. A setup for the package is available here_.
 
-Rendering the dataset
+Building the dataset
 -----------------------------
 Just type into your terminal:
 
 .. code:: shell
 
-   python run.py
+   python build.py
 
 
 
