@@ -4,7 +4,7 @@ import os
 def clear(target:str):
     [
         shutil.rmtree(
-            "{target}/{directory}".format(target=target, directory=directory)
+            "{target}/{directory}".format(target=target, directory=directory), ignore_errors=True
         ) for directory in [
             "expanded_regions",
             "one_hot_encoded_classes",
