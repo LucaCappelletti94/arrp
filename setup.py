@@ -83,6 +83,6 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     tests_require=test_deps,
-    install_requires=["tqdm", "typing", "pandas", "sklearn", "fasta_one_hot_encoder"],
+    install_requires=["tqdm", "typing", "pandas", "sklearn", "fasta_one_hot_encoder", "requests"],
     extras_require=extras,
 )
