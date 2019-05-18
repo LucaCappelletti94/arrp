@@ -15,7 +15,7 @@ def one_hot_encode_expanded_regions(target: str):
         lower=True,
         sparse=False
     )
-    for region in tqdm(regions, leave=False):
+    for region in tqdm(regions, leave=False, desc="Cell lines"):
         path = "{target}/one_hot_encoded_expanded_regions/{region}.csv".format(
             region=region,
             target=target
