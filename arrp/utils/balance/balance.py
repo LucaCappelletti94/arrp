@@ -9,8 +9,8 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         balancing_max: int, maximum numbers per balancing maximum
         output: int, expected output class.
     """
-    output_class_mask = classes == output
-    retain_mask = classes != output
+    output_class_mask = classes.values == output
+    retain_mask = classes.values != output
     n = np.sum(output_class_mask)
     if n > balancing_max:
         datapoints_to_remove = n - balancing_max
