@@ -68,7 +68,7 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
                 nucleotides_sequences,
                 nucleotides_sequences_header,
                 pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])    
-            ) for task in tqdm([task for task in tasks if any(task["balancing"].values())], desc="Building jobs")
+            ) for task in [task for task in tasks if any(task["balancing"].values())]
         ]
 
         with Pool(cpu_count()) as p:
