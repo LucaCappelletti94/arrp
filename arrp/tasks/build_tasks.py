@@ -70,5 +70,5 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
                 nucleotides_sequences,
                 nucleotides_sequences_index,
                 nucleotides_sequences_header,
-                classes[task["positive"]].any(axis=1)
+                pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])
             )
