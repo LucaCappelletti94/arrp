@@ -61,13 +61,14 @@ def build_balance(path:str, task:Dict, balance_settings:Dict, indices, headers, 
 
 def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validation_split:float, test_split:float, cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataFrame, nucleotides_sequences_index, nucleotides_sequences_header, classes:pd.DataFrame)->Dict:
     """Build given task's holdouts and validation split for given target."""
-    dataset_split = cellular_variables_train, cellular_variables_test, nucleotides_sequences_train, nucleotides_sequences_test, classes_train, classes_test = train_test_split(
-        cellular_variables, nucleotides_sequences, classes, random_state=42, test_size=test_split
-    )
     indices = train_test_split(
         cellular_variables.index, nucleotides_sequences_index, classes.index, random_state=42, test_size=test_split
     )
     headers = cellular_variables.columns, cellular_variables.columns, nucleotides_sequences_header, nucleotides_sequences_header, classes.columns, classes.columns
+    cellular_variables, nucleotides_sequences, classes = cellular_variables.values, nucleotides_sequences, classes.values
+    dataset_split = cellular_variables_train, cellular_variables_test, nucleotides_sequences_train, nucleotides_sequences_test, classes_train, classes_test = train_test_split(
+        cellular_variables, nucleotides_sequences, classes, random_state=42, test_size=test_split
+    )
     build_balance(get_model_validation_path(path), task, balance_settings, indices=indices, headers=headers, dataset_split=dataset_split)
     model_selection_path = get_model_selection_path(path)
     for holdout in tqdm(range(holdouts), leave=False, desc="Holdouts"):

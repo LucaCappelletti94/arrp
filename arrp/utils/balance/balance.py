@@ -93,6 +93,4 @@ def get_balancing_kwargs(balance_callback:str, positive_class:str, negative_clas
 
 def balance(*dataset_split:Tuple, balance_callback:str, positive_class:str, negative_class:str, settings:Dict)->Tuple:
     global balancing_callbacks
-    return balancing_callbacks[balance_callback](*[
-        d.values for d in dataset_split
-    ], **get_balancing_kwargs(balance_callback, positive_class, negative_class, settings))
+    return balancing_callbacks[balance_callback](*dataset_split, **get_balancing_kwargs(balance_callback, positive_class, negative_class, settings))
