@@ -40,7 +40,7 @@ def balanced(*dataset_split:Tuple, balancing_max: int)->Tuple:
         if i%2==0: # Balance only training data
             for output_class in [0, 1]:
                 balanced_dataset_split.append(balance_generic(
-                    array, y_train, balancing_max, output_class
+                    array.values, y_train, balancing_max, output_class
                 ))
         else:
             balanced_dataset_split.append(array)
@@ -64,7 +64,7 @@ def full_balanced(*dataset_split:Tuple, balancing_max:int, rate: Tuple[int, int]
             for output_class in [0, 1]:
                 opposite = 1 - output_class
                 balanced_dataset_split.append(balance_generic(
-                    array, y_test, int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
+                    array.values, y_test, int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
                 )
         else:
             balanced_dataset_split.append(array)
