@@ -58,8 +58,9 @@ def build_balance(path:str, task:Dict, balance_settings:Dict, headers, dataset_s
             )
             store_balance(balanced_path, headers, *balanced)
 
-def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validation_split:float, test_split:float, cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataFrame, nucleotides_sequences_header, classes:pd.DataFrame)->Dict:
+def build_task(job)->Dict:
     """Build given task's holdouts and validation split for given target."""
+    path, task, balance_settings, holdouts, validation_split, test_split, cellular_variables, nucleotides_sequences, nucleotides_sequences_header, classes = job
     headers = cellular_variables.columns, cellular_variables.columns, nucleotides_sequences_header, nucleotides_sequences_header, classes.columns, classes.columns
     cellular_variables, nucleotides_sequences, classes = cellular_variables.values, nucleotides_sequences, classes.values
     dataset_split = cellular_variables_train, _, nucleotides_sequences_train, _, classes_train, _ = train_test_split(
