@@ -30,22 +30,11 @@ def load_classes(target:str, cell_line:str):
         index_col=0
     )
 
-def get_active_regions(classes):
-    return np.any([
-        classes[column] for column in classes.columns if "A"==column.split("-")[0]
-    ], axis=0)
-
-def get_promoter_regions(classes):
-    return np.any([
-        classes[column] for column in classes.columns if "P"==column.split("-")[1]
-    ], axis=0)
-
 def load(target:str, cell_line:str, verbose:bool=True)->Dict:
     """Return a Dict containing four dataframes for the given cell line:
         1. Contains the cellular variables data
         2. Contains the nucleotides sequences.
-        3. Contains the labels for active/inactive region.
-        4. Contains the labels for promoter/enhancer region.
+        3. Contains the labels for given task
     """
     if verbose:
         print("Loading cellular variables.")
