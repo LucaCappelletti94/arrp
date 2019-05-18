@@ -72,4 +72,4 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
         ]
 
         with Pool(cpu_count()) as p:
-            list(tqdm(p.imap(build_task, jobs)), total=len(jobs), desc="Running jobs")
+            list(tqdm(p.imap(build_task, jobs), total=len(jobs), desc="Running jobs"))
