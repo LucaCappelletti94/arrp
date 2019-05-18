@@ -42,6 +42,7 @@ def store_balance(path:str, indices, headers, *dataset_split):
         if is_nucleotide_sequence_file(name):
             array = array.reshape(-1, 5)
             index = index.reshape(-1)
+        print(name, index.shape, header.shape, array.shape)
         pd.DataFrame(array, index=index, columns=header).to_csv(
             "{path}/{name}.csv".format(path=path, name=name)
         )
