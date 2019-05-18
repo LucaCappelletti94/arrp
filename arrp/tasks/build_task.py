@@ -27,7 +27,7 @@ def get_default_file_names():
     ]
 
 def is_nucleotide_sequence_file(name:str):
-    return name.startswith("nucleotides_sequence_")
+    return name.startswith("nucleotides_sequences_")
 
 def is_cached(path:str):
     return all([
@@ -42,7 +42,6 @@ def store_balance(path:str, indices, headers, *dataset_split):
         if is_nucleotide_sequence_file(name):
             array = array.reshape(-1, 5)
             index = index.reshape(-1)
-        print(array.shape, index.shape, header.shape)
         pd.DataFrame(array, index=index, columns=header).to_csv(
             "{path}/{name}.csv".format(path=path, name=name)
         )
