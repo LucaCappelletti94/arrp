@@ -28,7 +28,7 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-__version__ = find_version("arrp_dataset", "__version__.py")
+__version__ = find_version("arrp", "__version__.py")
 
 test_deps = ['pytest', 'pytest-cov', 'coveralls']
 
@@ -37,7 +37,7 @@ extras = {
 }
 
 setup(
-    name='arrp_dataset',
+    name='arrp',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
