@@ -6,3 +6,4 @@ def build(target:str, genome:str="hg19"):
     expand_regions(target, genome)
     one_hot_encode_regions(target)
     one_hot_encode_expanded_regions(target)
+    buld_tasks()
