@@ -16,8 +16,7 @@ def load_nucleotides_sequences(target:str, cell_line:str):
     return pd.read_csv(
         "{target}/one_hot_encoded_expanded_regions/{cell_line}.csv".format(
             target=target,
-            cell_line=cell_line,
-            k=1,
+            cell_line=cell_line
         ), 
         index_col=0
     )
@@ -43,11 +42,11 @@ def drop_unknown(cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataF
 
 @mkdir
 def get_cell_line_path(path:str, cell_line:str):
-    return "{path}/{cell_line}".format(path=path, cell_line=cell_line)
+    return "{path}/tasks/{cell_line}".format(path=path, cell_line=cell_line)
 
 @mkdir
 def get_task_path(path:str, task:str):
-    return "{path}/tasks/{task}".format(path=path, task=task.replace(" ", "_"))
+    return "{path}/{task}".format(path=path, task=task.replace(" ", "_"))
 
 def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, test_split:float, balance_settings:Dict):
     for cell_line in tqdm(get_cell_lines(target), desc="Cell lines"):
