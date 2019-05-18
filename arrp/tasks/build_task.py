@@ -67,7 +67,7 @@ def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validat
     dataset_split = cellular_variables_train, _, nucleotides_sequences_train, _, classes_train, _ = train_test_split(
         cellular_variables, nucleotides_sequences, classes, random_state=42, test_size=test_split
     )
-    build_balance((get_model_validation_path(path), task, balance_settings, headers=headers, dataset_split=dataset_split))
+    build_balance((get_model_validation_path(path), task, balance_settings, headers, dataset_split))
     model_selection_path = get_model_selection_path(path)
     jobs = (
         (get_holdout_path(model_selection_path, holdout), task, balance_settings, headers, (train_test_split(cellular_variables_train, nucleotides_sequences_train, classes_train, random_state=holdout, test_size=validation_split),))
