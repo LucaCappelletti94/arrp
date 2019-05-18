@@ -2,6 +2,7 @@ from typing import List, Dict, Tuple
 import pandas as pd
 from .build_task import build_task
 from ..utils import get_cell_lines, tqdm, mkdir
+from multiprocessing import Pool, cpu_count
 
 def load_cellular_variables(target:str, cell_line:str):
     return pd.read_csv(
@@ -56,9 +57,8 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
         classes = load_classes(target, cell_line)
         cellular_variables, nucleotides_sequences, classes = drop_unknown(cellular_variables, nucleotides_sequences, classes)
         cell_line_path = get_cell_line_path(target, cell_line)
-        for task in tqdm([task for task in tasks if any(task["balancing"].values())], desc="Building tasks"):
-            build_task(
-                get_cell_line_path(cell_line_path, task["name"]),
+        jobs = [
+            (get_cell_line_path(cell_line_path, task["name"]),
                 task,
                 balance_settings,
                 holdouts,
@@ -67,5 +67,9 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
                 cellular_variables,
                 nucleotides_sequences,
                 nucleotides_sequences_header,
-                pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])
-            )
+                pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])    
+            ) for task in tqdm([task for task in tasks if any(task["balancing"].values())], desc="Building jobs")
+        ]
+
+        with Pool(cpu_count()) as p:
+            list(tqdm(p.imap(build_task, jobs)), total=len(jobs), desc="Running jobs")

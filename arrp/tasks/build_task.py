@@ -62,7 +62,7 @@ def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validat
     """Build given task's holdouts and validation split for given target."""
     headers = cellular_variables.columns, cellular_variables.columns, nucleotides_sequences_header, nucleotides_sequences_header, classes.columns, classes.columns
     cellular_variables, nucleotides_sequences, classes = cellular_variables.values, nucleotides_sequences, classes.values
-    dataset_split = cellular_variables_train, cellular_variables_test, nucleotides_sequences_train, nucleotides_sequences_test, classes_train, classes_test = train_test_split(
+    dataset_split = cellular_variables_train, _, nucleotides_sequences_train, _, classes_train, _ = train_test_split(
         cellular_variables, nucleotides_sequences, classes, random_state=42, test_size=test_split
     )
     build_balance(get_model_validation_path(path), task, balance_settings, headers=headers, dataset_split=dataset_split)
