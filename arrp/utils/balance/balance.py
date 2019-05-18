@@ -9,8 +9,8 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         balancing_max: int, maximum numbers per balancing maximum
         output: int, expected output class.
     """
-    output_class_mask = classes.values == output
-    retain_mask = classes.values != output
+    output_class_mask = classes == output
+    retain_mask = classes != output
     n = np.sum(output_class_mask)
     if n > balancing_max:
         datapoints_to_remove = n - balancing_max
@@ -40,7 +40,7 @@ def balanced(*dataset_split:Tuple, balancing_max: int)->Tuple:
         if i%2==0: # Balance only training data
             for output_class in [0, 1]:
                 balanced_dataset_split.append(balance_generic(
-                    array.values, y_train, balancing_max, output_class
+                    array, y_train, balancing_max, output_class
                 ))
         else:
             balanced_dataset_split.append(array)
@@ -64,7 +64,7 @@ def full_balanced(*dataset_split:Tuple, balancing_max:int, rate: Tuple[int, int]
             for output_class in [0, 1]:
                 opposite = 1 - output_class
                 balanced_dataset_split.append(balance_generic(
-                    array.values, y_test, int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
+                    array, y_test, int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
                 )
         else:
             balanced_dataset_split.append(array)
@@ -93,4 +93,6 @@ def get_balancing_kwargs(balance_callback:str, positive_class:str, negative_clas
 
 def balance(*dataset_split:Tuple, balance_callback:str, positive_class:str, negative_class:str, settings:Dict)->Tuple:
     global balancing_callbacks
-    return balancing_callbacks[balance_callback](*dataset_split, **get_balancing_kwargs(balance_callback, positive_class, negative_class, settings))
+    return balancing_callbacks[balance_callback](*[
+        d.values for d in dataset_split
+    ], **get_balancing_kwargs(balance_callback, positive_class, negative_class, settings))
