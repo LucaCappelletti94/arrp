@@ -70,7 +70,7 @@ def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validat
     build_balance(get_model_validation_path(path), task, balance_settings, headers=headers, dataset_split=dataset_split)
     model_selection_path = get_model_selection_path(path)
     jobs = (
-        get_holdout_path(model_selection_path, holdout), task, balance_settings, headers, (train_test_split(cellular_variables_train, nucleotides_sequences_train, classes_train, random_state=holdout, test_size=validation_split),)
+        get_holdout_path(model_selection_path, holdout), task, balance_settings, headers, (train_test_split(cellular_variables_train, nucleotides_sequences_train, classes_train, random_state=holdout, test_size=validation_split),))
         for holdout in range(holdouts)
     )
     with Pool(cpu_count) as p:
