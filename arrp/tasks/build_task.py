@@ -20,25 +20,37 @@ def get_holdout_path(path:str, holdout:int):
 def get_balancing_path(path:str, balancing:str):
     return "{path}/{balancing}".format(path=path, balancing=balancing)
 
-def store_balance(path:str, indices, headers, *dataset_split):
-    names = [
+def get_default_file_names():
+    return [
         "cellular_variables_train", "cellular_variables_test", "nucleotides_sequences_train", "nucleotides_sequences_test", "classes_train", "classes_test"
     ]
-    for name, index, header, array in zip(names, indices, headers, dataset_split):
+
+def is_cached(path:str):
+    return all([
+        os.path.exists("{path}/{name}.csv".format(
+            path=path,
+            name=name
+        )) for name in get_default_file_names()
+    ])
+
+def store_balance(path:str, indices, headers, *dataset_split):
+    for name, index, header, array in zip(get_default_file_names(), indices, headers, dataset_split):
         pd.DataFrame(array, index=index, columns=header).to_csv(
             "{path}/{name}.csv".format(path=path, name=name)
         )
 
 def build_balance(path:str, task:Dict, balance_settings:Dict, indices, headers, dataset_split:Tuple):
     for balancing in tqdm([balancing for balancing, boolean in task["balancing"] if boolean], leave=False, desc="Balancing"):
-        balanced = balance(
-            *dataset_split,
-            balance_callback=balancing, 
-            positive_class=task["positive"],
-            negative_class=task["negative"],
-            settings=balance_settings
-        )
-        store_balance(get_balancing_path(path,  balancing), indices, headers, *balanced)
+        balanced_path = get_balancing_path(path, balancing)
+        if not is_cached(balanced_path):
+            balanced = balance(
+                *dataset_split,
+                balance_callback=balancing, 
+                positive_class=task["positive"],
+                negative_class=task["negative"],
+                settings=balance_settings
+            )
+            store_balance(balanced_path, indices, headers, *balanced)
 
 def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validation_split:float, test_split:float, cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataFrame, classes:pd.DataFrame)->Dict:
     """Build given task's holdouts and validation split for given target."""
