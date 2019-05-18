@@ -48,7 +48,7 @@ def get_task_path(path:str, task:str):
     return "{path}/{task}".format(path=path, task=task.replace(" ", "_"))
 
 def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, test_split:float, balance_settings:Dict):
-    for cell_line in tqdm(get_cell_lines(target), ncols=20, desc="Cell lines"):
+    for cell_line in tqdm(get_cell_lines(target), ncols=100, desc="Cell lines"):
         cellular_variables = load_cellular_variables(target, cell_line)
         nucleotides_sequences = load_nucleotides_sequences(target, cell_line)
         nucleotides_sequences_header = nucleotides_sequences.columns
@@ -56,7 +56,7 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
         classes = load_classes(target, cell_line)
         cellular_variables, nucleotides_sequences, classes = drop_unknown(cellular_variables, nucleotides_sequences, classes)
         cell_line_path = get_cell_line_path(target, cell_line)
-        for task in tqdm([task for task in tasks if any(task["balancing"].values())], ncols=20, desc="Building tasks"):
+        for task in tqdm([task for task in tasks if any(task["balancing"].values())], ncols=100, desc="Building tasks"):
             build_task(
                 get_cell_line_path(cell_line_path, task["name"]),
                 task,

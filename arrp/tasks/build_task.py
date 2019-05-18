@@ -74,5 +74,5 @@ def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validat
         for holdout in range(holdouts)
     )
     with Pool(cpu_count()) as p:
-        list(tqdm(p.imap(build_balance, jobs), ncols=20, total=holdouts, desc="Holdouts"))
+        list(tqdm(p.imap(build_balance, jobs), ncols=100, total=holdouts, desc="Holdouts"))
     
