@@ -38,6 +38,12 @@ def is_cached(path:str):
         )) for name in get_default_file_names()
     ])
 
+def is_balancing_cached(path:str, task:str):
+    return all([
+        is_cached(get_balancing_path(path, balancing)) 
+        for balancing in [balancing for balancing, boolean in task["balancing"].items() if boolean]
+    ])
+
 def store_balance(path:str, headers, dataset_split):
     for name, header, array in zip(get_default_file_names(), headers, dataset_split):
         if is_nucleotide_sequence_file(name):
@@ -51,27 +57,37 @@ def build_balance(job:Tuple):
     for balancing in [balancing for balancing, boolean in task["balancing"].items() if boolean]:
         balanced_path = get_balancing_path(path, balancing)
         if not is_cached(balanced_path):
-            balanced = balance(
-                dataset_split,
-                balance_callback=balancing, 
-                positive_class="+".join(task["positive"]),
-                negative_class="+".join(task["negative"]),
-                settings=balance_settings
-            )
-            store_balance(balanced_path, headers, balanced)
+            try:
+                balanced = balance(
+                    dataset_split,
+                    balance_callback=balancing, 
+                    positive_class="+".join(task["positive"]),
+                    negative_class="+".join(task["negative"]),
+                    settings=balance_settings
+                )
+                store_balance(balanced_path, headers, balanced)
+            except IndexError:
+                with open("errors.txt", "a") as f:
+                    f.write("{name}, {path}, {balancing}".format(
+                        name=task["name"],
+                        path=balanced_path,
+                        balancing=balancing
+                    ))
 
 def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validation_split:float, test_split:float, cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataFrame, nucleotides_sequences_header, classes:pd.DataFrame)->Dict:
     """Build given task's holdouts and validation split for given target."""
+    model_validation_path = get_model_validation_path(path)
     headers = cellular_variables.columns, cellular_variables.columns, nucleotides_sequences_header, nucleotides_sequences_header, classes.columns, classes.columns
     cellular_variables, nucleotides_sequences, classes = cellular_variables.values, nucleotides_sequences, classes.values
     dataset_split = cellular_variables_train, cellular_variables_test, nucleotides_sequences_train, nucleotides_sequences_test, classes_train, classes_test = train_test_split(
         cellular_variables, nucleotides_sequences, classes, random_state=42, test_size=test_split
     )
-    build_balance((get_model_validation_path(path), task, balance_settings, headers, dataset_split))
+    if not is_balancing_cached(model_validation_path, task):
+        build_balance((model_validation_path, task, balance_settings, headers, dataset_split))
     model_selection_path = get_model_selection_path(path)
     jobs = (
         (get_holdout_path(model_selection_path, holdout), task, balance_settings, headers, train_test_split(cellular_variables_train, nucleotides_sequences_train, classes_train, random_state=holdout, test_size=validation_split))
-        for holdout in range(holdouts)
+        for holdout in range(holdouts) if not is_balancing_cached(get_holdout_path(model_selection_path, holdout), task)
     )
     with Pool(cpu_count()) as p:
         list(tqdm(p.imap(build_balance, jobs), ncols=100, total=holdouts, desc="Holdouts", leave=False))
