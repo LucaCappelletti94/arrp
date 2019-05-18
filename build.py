@@ -1,3 +1,3 @@
-from arrp_dataset import build
+from arrp import build
 
 build(target="dataset")
