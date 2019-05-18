@@ -4,3 +4,7 @@ from .one_hot_encode_regions import one_hot_encode_regions
 from .one_hot_encode_expanded_regions import one_hot_encode_expanded_regions
 from .get_cell_lines import get_cell_lines
 from .ungzip_data import ungzip_data
+from .balance import balance
+from .load_settings import load_settings
+from .tqdm import tqdm
+from .mkdir import mkdir
