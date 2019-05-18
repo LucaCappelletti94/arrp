@@ -58,7 +58,7 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
         cell_line_path = get_cell_line_path(target, cell_line)
         for task in tqdm([task for task in tasks if any(task["balancing"].values())], ncols=100, desc="Building tasks"):
             build_task(
-                get_cell_line_path(cell_line_path, task["name"]),
+                get_task_path(cell_line_path, task["name"]),
                 task,
                 balance_settings,
                 holdouts,
