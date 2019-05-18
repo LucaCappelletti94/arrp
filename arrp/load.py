@@ -1,65 +1,32 @@
 import pandas as pd
-from typing import Dict
 import numpy as np
+from .tasks import get_task_path, get_cell_line_path, get_model_selection_path, get_model_validation_path, get_holdout_path, get_balancing_path, get_default_file_names, is_nucleotide_sequence_file
 
-def load_cellular_variables(target:str, cell_line:str):
-    return pd.read_csv(
-        "{target}/data/{cell_line}.csv".format(
-            target=target,
-            cell_line=cell_line
+def get_full_model_validation_path(target:str, cell_line:str, task:str, balance_mode:str):
+    return get_balancing_path(get_model_validation_path(get_task_path(get_cell_line_path(target, cell_line), task)), balance_mode)
+
+def get_full_model_selection_path(target:str, cell_line:str, task:str, balance_mode:str, holdout:int):
+    return get_balancing_path(get_holdout_path(get_model_selection_path(get_task_path(get_cell_line_path(target, cell_line), task)), balance_mode), holdout)
+
+def get_full_path(target:str, cell_line:str, task:str, balance_mode:str, holdout=None):
+    if holdout is None:
+        return get_full_model_validation_path(target, cell_line, task, balance_mode)
+    return get_full_model_selection_path(target, cell_line, task, balance_mode, holdout)
+
+def load_csv(path:str, name:str):
+    df = pd.read_csv(
+        "{path}/{name}.csv".format(
+            path=path,
+            name=name
         ), 
         index_col=0
     )
+    if is_nucleotide_sequence_file(name):
+        return df.values.reshape(-1, 200, 5)
+    return df
 
-def load_nucleotides_sequences(target:str, cell_line:str):
-    return pd.read_csv(
-        "{target}/one_hot_encoded_expanded_regions/{cell_line}.csv".format(
-            target=target,
-            cell_line=cell_line,
-            k=1,
-        ), 
-        index_col=0
-    ).values.reshape(-1, 200, 5)
-
-def load_classes(target:str, cell_line:str):
-    return pd.read_csv(
-        "{target}/one_hot_encoded_classes/{cell_line}.csv".format(
-            target=target,
-            cell_line=cell_line,
-        ), 
-        index_col=0
-    )
-
-def load(target:str, cell_line:str, verbose:bool=True)->Dict:
-    """Return a Dict containing four dataframes for the given cell line:
-        1. Contains the cellular variables data
-        2. Contains the nucleotides sequences.
-        3. Contains the labels for given task
-    """
-    if verbose:
-        print("Loading cellular variables.")
-    cellular_variables = load_cellular_variables(target, cell_line)
-    if verbose:
-        print("Loading nucleotide sequences.")
-    nucleotides_sequences = load_nucleotides_sequences(target, cell_line)
-    if verbose:
-        print("Loading classes.")
-    classes = load_classes(target, cell_line)
-    if verbose:
-        print("Dropping unknown labels.")
-    unknown = classes["UK"] == 1
-    cellular_variables = cellular_variables.drop(index=cellular_variables.index[unknown])
-    nucleotides_sequences = nucleotides_sequences[~unknown]
-    classes = classes.drop(index=classes.index[unknown])
-    classes = classes.drop(columns=["UK"])
-    if verbose:
-        print("Rendering labels.")
-    active_regions = get_active_regions(classes)
-    promoter_regions = get_promoter_regions(classes)
-
-    return {
-        "cellular_variables": cellular_variables,
-        "nucleotides_sequences": nucleotides_sequences,
-        "active_regions": active_regions,
-        "promoter_regions": promoter_regions
-    }
+def load(target:str, cell_line:str, task:str, balance_mode:str, holdout:int=None):
+    path = get_full_path(target, cell_line, task, balance_mode, holdout)
+    return [
+        load_csv(path, name) for name in get_default_file_names()
+    ]

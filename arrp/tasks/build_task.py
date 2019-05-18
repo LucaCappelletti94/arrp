@@ -26,6 +26,9 @@ def get_default_file_names():
         "cellular_variables_train", "cellular_variables_test", "nucleotides_sequences_train", "nucleotides_sequences_test", "classes_train", "classes_test"
     ]
 
+def is_nucleotide_sequence_file(name:str):
+    return name.startswith("nucleotides_sequence_")
+
 def is_cached(path:str):
     return all([
         os.path.exists("{path}/{name}.csv".format(
@@ -36,7 +39,7 @@ def is_cached(path:str):
 
 def store_balance(path:str, indices, headers, *dataset_split):
     for name, index, header, array in zip(get_default_file_names(), indices, headers, dataset_split):
-        if "nucleotides_sequence" in name:
+        if is_nucleotide_sequence_file(name):
             array = array.reshape(-1, 5)
             index = index.reshape(-1)
         pd.DataFrame(array, index=index, columns=header).to_csv(
