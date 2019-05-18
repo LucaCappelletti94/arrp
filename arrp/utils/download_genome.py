@@ -1,5 +1,5 @@
 from multiprocessing import Pool, cpu_count
-from tqdm import tqdm
+from .tqdm import tqdm
 import glob
 import shutil
 import os
@@ -33,7 +33,7 @@ def download_genome(target: str, genome: str):
 
     print("Downloading genome {genome}.".format(genome=genome))
     with Pool(cpu_count()) as p:
-        list(tqdm(p.imap(downloader, urls), total=len(urls)))
+        list(tqdm(p.imap(downloader, urls), total=len(urls),desc="Chromosomes"))
 
     print("Merging chromosomes.")
     merger(target, genome)

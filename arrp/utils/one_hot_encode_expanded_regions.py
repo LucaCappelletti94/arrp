@@ -1,4 +1,4 @@
-from tqdm import tqdm
+from .tqdm import tqdm
 from fasta_one_hot_encoder import FastaOneHotEncoder
 from .get_cell_lines import get_cell_lines
 import os
