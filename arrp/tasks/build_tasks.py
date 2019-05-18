@@ -2,7 +2,6 @@ from typing import List, Dict, Tuple
 import pandas as pd
 from .build_task import build_task
 from ..utils import get_cell_lines, tqdm, mkdir
-from multiprocessing import Pool, cpu_count
 
 def load_cellular_variables(target:str, cell_line:str):
     return pd.read_csv(
@@ -31,14 +30,15 @@ def load_classes(target:str, cell_line:str):
         index_col=0
     )
 
-def drop_unknown(cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataFrame, classes:pd.DataFrame)->Tuple:
+def drop_unknown(cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataFrame, nucleotides_sequences_index:pd.DataFrame, classes:pd.DataFrame)->Tuple:
     """Remove datapoints labeles as UK."""
     unknown = classes["UK"] == 1
     cellular_variables = cellular_variables.drop(index=cellular_variables.index[unknown])
     nucleotides_sequences = nucleotides_sequences[~unknown]
+    nucleotides_sequences_index = nucleotides_sequences_index[~unknown]
     classes = classes.drop(index=classes.index[unknown])
     classes = classes.drop(columns=["UK"])
-    return cellular_variables, nucleotides_sequences, classes
+    return cellular_variables, nucleotides_sequences, nucleotides_sequences_index, classes
 
 @mkdir
 def get_cell_line_path(path:str, cell_line:str):
@@ -52,13 +52,15 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
     for cell_line in tqdm(get_cell_lines(target), desc="Cell lines"):
         cellular_variables = load_cellular_variables(target, cell_line)
         nucleotides_sequences = load_nucleotides_sequences(target, cell_line)
+        nucleotides_sequences_index = nucleotides_sequences.index.values.reshape(-1, 200)
         nucleotides_sequences_header = nucleotides_sequences.columns
         nucleotides_sequences = nucleotides_sequences.values.reshape(-1, 200, 5)
         classes = load_classes(target, cell_line)
-        cellular_variables, nucleotides_sequences, classes = drop_unknown(cellular_variables, nucleotides_sequences, classes)
+        cellular_variables, nucleotides_sequences, nucleotides_sequences_index, classes = drop_unknown(cellular_variables, nucleotides_sequences, nucleotides_sequences_index, classes)
         cell_line_path = get_cell_line_path(target, cell_line)
-        jobs = [
-            (get_cell_line_path(cell_line_path, task["name"]),
+        for task in tqdm([task for task in tasks if any(task["balancing"].values())], desc="Building tasks"):
+            build_task(
+                get_cell_line_path(cell_line_path, task["name"]),
                 task,
                 balance_settings,
                 holdouts,
@@ -66,10 +68,7 @@ def build_tasks(target:str, tasks:List, holdouts:int, validation_split:float, te
                 test_split,
                 cellular_variables,
                 nucleotides_sequences,
+                nucleotides_sequences_index,
                 nucleotides_sequences_header,
-                pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])    
-            ) for task in [task for task in tasks if any(task["balancing"].values())]
-        ]
-
-        with Pool(cpu_count()) as p:
-            list(tqdm(p.imap(build_task, jobs), total=len(jobs), desc="Running jobs"))
+                classes
+            )
