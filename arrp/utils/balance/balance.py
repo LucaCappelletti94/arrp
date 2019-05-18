@@ -18,7 +18,6 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         mask[:datapoints_to_remove] = 0
         np.random.shuffle(mask)
         output_class_mask[np.where(output_class_mask)] = mask
-        print(array.shape, output_class_mask.shape, retain_mask.shape, np.logical_or(output_class_mask, retain_mask).reshape(-1).shape)
         array = array[np.logical_or(output_class_mask, retain_mask).reshape(-1)]
     return array
 
