@@ -8,11 +8,11 @@ Just clone the repo.
 
 How to get the package?
 ---------------------------
-Just type into your terminal:
+Just type into your terminal from within the repository:
 
 .. code:: shell
 
-   pip install arrp_dataset
+   pip install .
 
 Which genome does it use by default?
 ----------------------------------------
