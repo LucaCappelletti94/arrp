@@ -38,7 +38,7 @@ def is_cached(path:str):
         )) for name in get_default_file_names()
     ])
 
-def store_balance(path:str, headers, *dataset_split):
+def store_balance(path:str, headers, dataset_split):
     for name, header, array in zip(get_default_file_names(), headers, dataset_split):
         if is_nucleotide_sequence_file(name):
             array = array.reshape(-1, 5)
@@ -52,13 +52,13 @@ def build_balance(job:Tuple):
         balanced_path = get_balancing_path(path, balancing)
         if not is_cached(balanced_path):
             balanced = balance(
-                *dataset_split,
+                dataset_split,
                 balance_callback=balancing, 
                 positive_class="+".join(task["positive"]),
                 negative_class="+".join(task["negative"]),
                 settings=balance_settings
             )
-            store_balance(balanced_path, headers, *balanced)
+            store_balance(balanced_path, headers, balanced)
 
 def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validation_split:float, test_split:float, cellular_variables:pd.DataFrame, nucleotides_sequences:pd.DataFrame, nucleotides_sequences_header, classes:pd.DataFrame)->Dict:
     """Build given task's holdouts and validation split for given target."""
@@ -70,8 +70,9 @@ def build_task(path:str, task:Dict, balance_settings:Dict, holdouts:int, validat
     build_balance((get_model_validation_path(path), task, balance_settings, headers, dataset_split))
     model_selection_path = get_model_selection_path(path)
     jobs = (
-        (get_holdout_path(model_selection_path, holdout), task, balance_settings, headers, (train_test_split(cellular_variables_train, nucleotides_sequences_train, classes_train, random_state=holdout, test_size=validation_split),))
+        (get_holdout_path(model_selection_path, holdout), task, balance_settings, headers, train_test_split(cellular_variables_train, nucleotides_sequences_train, classes_train, random_state=holdout, test_size=validation_split))
         for holdout in range(holdouts)
     )
     with Pool(cpu_count()) as p:
         list(tqdm(p.imap(build_balance, jobs), total=holdouts, desc="Holdouts"))
+    
