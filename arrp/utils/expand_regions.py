@@ -1,14 +1,13 @@
 import subprocess
 import os
 from .get_cell_lines import get_cell_lines
-
+from .tqdm import tqdm
 
 def expand_regions(target: str, genome: str):
     """Expand the genomic regions using data withing given target and genome."""
-    print("Expanding regions.")
     os.makedirs(
         "{target}/expanded_regions".format(target=target), exist_ok=True)
-    for region in get_cell_lines(target):
+    for region in tqdm(get_cell_lines(target), desc="Expanding cell lines sequences"):
         goal = "{target}/expanded_regions/{region}.fa".format(
             region=region,
             target=target

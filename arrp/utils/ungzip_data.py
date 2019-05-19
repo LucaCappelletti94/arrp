@@ -5,7 +5,7 @@ import os
 def ungzip_data(target: str):
     print("Expanding data.")
     for cell_line in get_cell_lines(target):
-        path =  "{target}/data/{cell_line}.csv".format(
+        path =  "{target}/epigenomic_data/{cell_line}.csv".format(
             target=target,
             cell_line=cell_line
         )
