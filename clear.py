@@ -1,3 +1,3 @@
-from arrp_dataset import clear
+from arrp import clear
 
 clear(target="dataset")
