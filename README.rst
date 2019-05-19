@@ -12,7 +12,15 @@ Most commonly you just need to run, from within the repository:
 
     sudo apt install bedtools
     pip install .
-    python build.py
+
+How do I build the dataset?
+---------------------------------------
+Just run:
+
+.. code:: python
+
+    from arrp import build
+    build(target="dataset")
 
 Which genome does it use?
 ----------------------------------------
