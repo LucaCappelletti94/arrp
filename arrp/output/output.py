@@ -38,15 +38,16 @@ def build_output(target:str, settings:Dict):
         classes = load_raw_classes(target, cell_line)
         for task in settings["tasks"]:
             validation_path = get_output_model_validation_path(target, cell_line, task["name"])
+            task_classes = pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])
             if not is_cached(validation_path):
                 kwarged_job({
-                    "classes":classes,
+                    "classes":task_classes,
                     "random_state":settings["test_random_state"],
                     "test_size":settings["test_size"],
                     "path":validation_path
                 })
             classes_train, _ = train_test_split(
-                classes, random_state=settings["test_random_state"], test_size=settings["test_size"]
+                task_classes, random_state=settings["test_random_state"], test_size=settings["test_size"]
             )
             jobs = [
                 {
