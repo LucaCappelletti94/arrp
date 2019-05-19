@@ -1,0 +1,97 @@
+{
+    "balance":{
+        "class_balancing": {
+            "A-E": 1,
+            "A-P": 1,
+            "A-X": 1,
+            "I-E": 2,
+            "I-P": 2,
+            "I-X": 1,
+            "UK": 10
+        },
+        "max":3000
+    },
+    "genome": "hg19",
+    "holdouts":100,
+    "validation_size":0.1,
+    "test_size":0.3,
+    "test_random_state":42,
+    "validation_starting_random_state":42,
+    "tasks": [
+        {
+            "name": "Active enhancers vs active promoters",
+            "positive": [
+                "A-E"
+            ],
+            "negative": [
+                "A-P"
+            ],
+            "balancing": {
+                "umbalanced": true,
+                "balanced": true,
+                "full_balanced": true
+            }
+        },
+        {
+            "name":"Active promoters vs inactive promoters",
+            "positive": [
+                "A-P"
+            ],
+            "negative": [
+                "I-P"
+            ],
+            "balancing": {
+                "umbalanced": true,
+                "balanced": true,
+                "full_balanced": true
+            }
+        },
+        {
+            "name":"Active enhancers vs inactive enhancers",
+            "positive": [
+                "A-E"
+            ],
+            "negative": [
+                "I-E"
+            ],
+            "balancing": {
+                "umbalanced": true,
+                "balanced": true,
+                "full_balanced": true
+            }
+        },
+        {
+            "name":"Inactive enhancers vs inactive promoters",
+            "positive": [
+                "I-E"
+            ],
+            "negative": [
+                "I-P"
+            ],
+            "balancing": {
+                "umbalanced": true,
+                "balanced": true,
+                "full_balanced": true
+            }
+        },
+        {
+            "name":"Active enhancers and promoters vs anything else",
+            "positive": [
+                "A-E",
+                "A-P"
+            ],
+            "negative": [
+                "A-X",
+                "I-E",
+                "I-P",
+                "I-X",
+                "UK"
+            ],
+            "balancing": {
+                "umbalanced": true,
+                "balanced": true,
+                "full_balanced": false
+            }
+        }
+    ]
+}
