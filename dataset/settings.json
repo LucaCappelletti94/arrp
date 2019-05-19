@@ -13,8 +13,10 @@
     },
     "genome": "hg19",
     "holdouts":100,
-    "validation_split":0.1,
-    "test_split":0.3,
+    "validation_size":0.1,
+    "test_size":0.3,
+    "test_random_state":42,
+    "validation_starting_random_state":42,
     "tasks": [
         {
             "name": "Active enhancers vs active promoters",
