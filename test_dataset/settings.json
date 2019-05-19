@@ -12,7 +12,7 @@
         "max":3000
     },
     "genome": "hg19",
-    "holdouts":100,
+    "holdouts":10,
     "validation_size":0.1,
     "test_size":0.3,
     "test_random_state":42,
