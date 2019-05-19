@@ -15,7 +15,7 @@ dataset/one_hot_encoded_expanded_regions/
 
 dataset/one_hot_encoded_classes/
 
-dataset/epigenomic_data/*.csv
+*/epigenomic_data/*.csv
 
 test_dataset/cell_lines/
 
