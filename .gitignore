@@ -8,10 +8,17 @@ dataset/\.DS_Store
 __pycache__/
 
 \.vscode/
-*.fa
+dataset/*.fa
+dataset/expanded_regions/*.fa
 *.fai
 dataset/one_hot_encoded_expanded_regions/
 
 dataset/one_hot_encoded_classes/
 
-dataset/data/*.csv
+dataset/epigenomic_data/*.csv
+
+test_dataset/cell_lines/
+
+test_dataset/one_hot_encoded_classes/
+
+test_dataset/one_hot_encoded_expanded_regions/
