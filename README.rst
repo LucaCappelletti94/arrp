@@ -1,35 +1,22 @@
 Active regulatory regions prediction dataset renderer
 ===================================================================
-Simple python tool to render dataset that can be used for training models for active regulatory regions prediction.
+Simple python package to render the holdouts and training datasets of active regulatory regions for models with the task to predict them.
 
-How to get the dataset?
---------------------------
-Just clone the repo.
+How do I get started?
+----------------------------------------------
+If you don't have it already, you will need to install the package bedtools_. A setup for both Linux and macOS can be found here_. 
 
-How to get the package?
----------------------------
-Just type into your terminal from within the repository:
+Most commonly you just need to run, from within the repository:
 
 .. code:: shell
 
-   pip install .
+    sudo apt install bedtools
+    pip install .
+    python build.py
 
-Which genome does it use by default?
+Which genome does it use?
 ----------------------------------------
-By default it uses hg19_, as it is the genome used in the labeled data currently available from the Wasserman team.
-
-Dependencies
-------------------------------
-This package will use the package bedtools_ to elaborate the bed files. A setup for the package is available here_.
-
-Building the dataset
------------------------------
-Just type into your terminal:
-
-.. code:: shell
-
-   python build.py
-
+By default it uses hg19_, as it is the genome used in the labeled data currently available from the Wasserman team. This is one of the numerous settings available.
 
 
 .. _hg19: https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.13/
