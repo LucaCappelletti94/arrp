@@ -44,11 +44,11 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version=__version__,
 
-    description='Simple python tool to create dataset for arrps.',
+    description='Simple python package to render the holdouts and training datasets of active regulatory regions for models with the task to predict them.',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/LucaCappelletti94/cnn-code',
+    url='https://github.com/LucaCappelletti94/arrp',
 
     # Author details
     author='Luca Cappelletti',
