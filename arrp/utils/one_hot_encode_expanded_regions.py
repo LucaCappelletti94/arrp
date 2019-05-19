@@ -26,5 +26,4 @@ def one_hot_encode_expanded_regions(target: str):
             region=region,
             target=target
         )
-        if not os.path.exists(path):
-            encoder.transform_to_df(expand_region_path).to_csv(path)
+        encoder.transform_to_df(expand_region_path).to_csv(path)

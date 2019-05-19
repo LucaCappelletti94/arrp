@@ -74,7 +74,7 @@ balancing_callbacks = {
     "full_balanced": full_balanced
 }
 
-def get_balancing_kwargs(balance_callback:str, positive_class:str, negative_class:str, settings:Dict):
+def get_balancing_kwargs(balance_mode:str, positive_class:str, negative_class:str, settings:Dict):
     class_balancing = settings["class_balancing"]
     kwargs = {
         "umbalanced": {},
@@ -86,8 +86,8 @@ def get_balancing_kwargs(balance_callback:str, positive_class:str, negative_clas
             "balancing_max": settings["max"]
         }
     }
-    return kwargs[balance_callback]
+    return kwargs[balance_mode]
 
-def balance(dataset_split:Tuple, balance_callback:str, positive_class:str, negative_class:str, settings:Dict)->Tuple:
+def balance(dataset_split:Tuple, balance_mode:str, positive_class:str, negative_class:str, settings:Dict)->Tuple:
     global balancing_callbacks
-    return balancing_callbacks[balance_callback](*dataset_split, **get_balancing_kwargs(balance_callback, positive_class, negative_class, settings))
+    return balancing_callbacks[balance_mode](*dataset_split, **get_balancing_kwargs(balance_mode, positive_class, negative_class, settings))
