@@ -8,21 +8,23 @@ How do I get started?
 ----------------------------------------------
 If you don't have it already, you will need to install the package bedtools_. A setup for both Linux and macOS can be found here_. 
 
-Most commonly you just need to run, from within the repository:
+Most commonly you just need to run the following:
 
 .. code:: shell
 
     sudo apt install bedtools
-    pip install .
+    pip install arrp
 
 How do I build the dataset?
 ---------------------------------------
-Just run:
+From within the repo run:
 
 .. code:: python
 
     from arrp import build
     build(target="dataset")
+
+Where `"dataset"` is the path to your dataset. The default one is the one in the repository.
 
 Which genome does it use?
 ----------------------------------------
