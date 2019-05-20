@@ -47,30 +47,30 @@ def build_input(target:str, settings:Dict):
     for cell_line in tqdm(get_cell_lines(target), desc="Cell lines input"):
         epigenomic_data = load_raw_epigenomic_data(target, cell_line)
         nucleotides_sequences, nucleotides_sequences_index, nucleotides_sequences_columns = load_raw_nucleotides_sequences(target, cell_line)
-        validation_path = get_input_model_validation_path(target, cell_line)
-        if not is_cached(validation_path):
-            kwarged_job({
+        jobs = [
+            {
                 "epigenomic_data":epigenomic_data,
                 "nucleotides_sequences":nucleotides_sequences,
                 "nucleotides_sequences_index":nucleotides_sequences_index,
                 "nucleotides_sequences_columns":nucleotides_sequences_columns,
-                "random_state":settings["test_random_state"],
-                "test_size":settings["test_size"],
-                "path":validation_path
-            })
+                "random_state":settings["validation_starting_random_state"]+holdout,
+                "test_size":settings["validation_test_size"],
+                "path":get_input_model_validation_path(target, cell_line, holdout)
+            } for holdout in range(settings["validation_holdouts"]) if not is_cached(get_input_model_selection_path(target, cell_line, holdout))
+        ]
         epigenomic_data_train, _, nucleotides_sequences_train, _, nucleotides_sequences_index_train, _ = train_test_split(
-            epigenomic_data, nucleotides_sequences, nucleotides_sequences_index, random_state=settings["test_random_state"], test_size=settings["test_size"]
+            epigenomic_data, nucleotides_sequences, nucleotides_sequences_index, random_state=settings["selection_starting_random_state"], test_size=settings["validation_test_size"]
         )
-        jobs = [
+        jobs += [
             {
                 "epigenomic_data":epigenomic_data_train,
                 "nucleotides_sequences":nucleotides_sequences_train,
                 "nucleotides_sequences_index":nucleotides_sequences_index_train,
                 "nucleotides_sequences_columns":nucleotides_sequences_columns,
-                "random_state":settings["validation_starting_random_state"]+holdout,
-                "test_size":settings["validation_size"],
+                "random_state":settings["selection_starting_random_state"]+holdout,
+                "test_size":settings["selection_test_size"],
                 "path":get_input_model_selection_path(target, cell_line, holdout)
-            } for holdout in range(settings["holdouts"]) if not is_cached(get_input_model_selection_path(target, cell_line, holdout))
+            } for holdout in range(settings["selection_holdouts"]) if not is_cached(get_input_model_selection_path(target, cell_line, holdout))
         ]
         if len(jobs):
             with Pool(cpu_count()) as p:
