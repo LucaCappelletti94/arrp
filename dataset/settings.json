@@ -12,8 +12,8 @@
         "max":3000
     },
     "genome": "hg19",
-    "selection_holdouts":5,
-    "validation_holdouts":10,
+    "selection_holdouts":4,
+    "validation_holdouts":5,
     "epochs":100,
     "batch_size":100,
     "n_calls":30,
