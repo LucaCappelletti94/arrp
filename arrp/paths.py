@@ -49,14 +49,14 @@ def get_classes_path(path:str):
 def get_input_model_validation_path(target:str, cell_line:str, holdout:int):
     return get_holdout_path(get_model_validation_path(get_input_path(get_cell_line_path(target, cell_line))), holdout)
 
-def get_input_model_selection_path(target:str, cell_line:str, holdout:int):
-    return get_holdout_path(get_model_selection_path(get_input_path(get_cell_line_path(target, cell_line))), holdout)
+def get_input_model_selection_path(target:str, cell_line:str, outer:int, inner:int):
+    return get_holdout_path(get_holdout_path(get_model_selection_path(get_input_path(get_cell_line_path(target, cell_line))), outer),inner)
 
 def get_output_model_validation_path(target:str, cell_line:str, task:str, holdout:int):
     return get_holdout_path(get_model_validation_path(get_task_path(get_output_path(get_cell_line_path(target, cell_line)), task)),  holdout)
 
-def get_output_model_selection_path(target:str, cell_line:str, task:str, holdout:int):
-    return get_holdout_path(get_model_selection_path(get_task_path(get_output_path(get_cell_line_path(target, cell_line)), task)), holdout)
+def get_output_model_selection_path(target:str, cell_line:str, task:str, outer:int, inner:int):
+    return get_holdout_path(get_holdout_path(get_model_selection_path(get_task_path(get_output_path(get_cell_line_path(target, cell_line)), task)), outer),inner)
 
 def _build_csv_path(target:str, directory:str, cell_line:str):
     return "{target}/{directory}/{cell_line}.csv".format(

@@ -12,10 +12,10 @@
         "max":3000
     },
     "genome": "hg19",
-    "selection_holdouts":5,
-    "validation_holdouts":10,
+    "selection_holdouts":2,
+    "validation_holdouts":3,
     "epochs":2,
-    "batch_size":1000,
+    "batch_size":100,
     "n_calls":3,
     "gaussian_process_acquisition_function":"gp_hedge",
     "n_random_starts":1,

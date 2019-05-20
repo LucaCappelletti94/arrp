@@ -23,6 +23,8 @@ def is_cached(path:str)->bool:
     ])
 
 def job(classes:pd.DataFrame, random_state:int, test_size:float, path:str):
+    if is_cached(path):
+        return 0
     classes_train, classes_test = train_test_split(
         classes, random_state=random_state, test_size=test_size
     )
@@ -36,27 +38,28 @@ def kwarged_job(kwargs):
 def build_output(target:str, settings:Dict):
     for cell_line in tqdm(get_cell_lines(target), desc="Cell lines output"):
         classes = load_raw_classes(target, cell_line)
-        for task in settings["tasks"]:
+        for task in tqdm(settings["tasks"], desc="Tasks output"):
             task_classes = pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])
-            jobs = [
-                {
+            jobs = []
+            for outer in range(settings["validation_holdouts"]):
+                seed = settings["validation_starting_random_state"]+outer
+                jobs.append({
                     "classes":task_classes,
-                    "random_state":settings["validation_starting_random_state"]+holdout,
+                    "random_state":seed,
                     "test_size":settings["validation_test_size"],
-                    "path":get_output_model_validation_path(target, cell_line, task["name"], holdout)
-                } for holdout in range(settings["validation_holdouts"]) if not is_cached(get_output_model_selection_path(target, cell_line, task["name"], holdout))
-            ]
-            classes_train, _ = train_test_split(
-                task_classes, random_state=settings["selection_starting_random_state"], test_size=settings["validation_test_size"]
-            )
-            jobs += [
-                {
-                    "classes":classes_train,
-                    "random_state":settings["selection_starting_random_state"]+holdout,
-                    "test_size":settings["selection_test_size"],
-                    "path":get_output_model_selection_path(target, cell_line, task["name"], holdout)
-                } for holdout in range(settings["selection_holdouts"]) if not is_cached(get_output_model_selection_path(target, cell_line, task["name"], holdout))
-            ]
+                    "path":get_output_model_validation_path(target, cell_line, task["name"], outer)
+                })
+                classes_train, _ = train_test_split(
+                    task_classes, random_state=seed, test_size=settings["validation_test_size"]
+                )
+                jobs += [
+                    {
+                        "classes":classes_train,
+                        "random_state":settings["selection_starting_random_state"]+inner,
+                        "test_size":settings["selection_test_size"],
+                        "path":get_output_model_selection_path(target, cell_line, task["name"], outer, inner)
+                    } for inner in range(settings["selection_holdouts"])
+                ]
             if len(jobs):
                 with Pool(cpu_count()) as p:
                     list(tqdm(p.imap(kwarged_job, jobs), desc="Holdouts", leave=False, total=len(jobs)))
