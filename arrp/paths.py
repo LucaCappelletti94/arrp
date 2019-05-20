@@ -46,16 +46,16 @@ def get_nucleotides_sequences_path(path:str):
 def get_classes_path(path:str):
     return "{path}/classes.csv".format(path=path)
 
-def get_input_model_validation_path(target:str, cell_line:str):
-    return get_model_validation_path(get_input_path(get_cell_line_path(target, cell_line)))
+def get_input_model_validation_path(target:str, cell_line:str, holdout:int):
+    return get_holdout_path(get_model_validation_path(get_input_path(get_cell_line_path(target, cell_line))), holdout)
 
 def get_input_model_selection_path(target:str, cell_line:str, holdout:int):
     return get_holdout_path(get_model_selection_path(get_input_path(get_cell_line_path(target, cell_line))), holdout)
 
-def get_output_model_validation_path(target:str, cell_line:str, task:str):
-    return get_model_validation_path(get_task_path(get_output_path(get_cell_line_path(target, cell_line)), task))
+def get_output_model_validation_path(target:str, cell_line:str, task:str, holdout:int):
+    return get_holdout_path(get_model_validation_path(get_task_path(get_output_path(get_cell_line_path(target, cell_line)), task)),  holdout)
 
-def get_output_model_selelection_path(target:str, cell_line:str, task:str, holdout:int):
+def get_output_model_selection_path(target:str, cell_line:str, task:str, holdout:int):
     return get_holdout_path(get_model_selection_path(get_task_path(get_output_path(get_cell_line_path(target, cell_line)), task)), holdout)
 
 def _build_csv_path(target:str, directory:str, cell_line:str):

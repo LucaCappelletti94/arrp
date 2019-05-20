@@ -2,7 +2,7 @@ from typing import Dict
 from ..utils import get_cell_lines, tqdm
 from ..load_csv import load_raw_classes
 from ..store_csv import store_classes
-from ..paths import get_classes_path, get_train_path, get_test_path, get_output_model_validation_path, get_output_model_selelection_path
+from ..paths import get_classes_path, get_train_path, get_test_path, get_output_model_validation_path, get_output_model_selection_path
 import os
 import pandas as pd
 from multiprocessing import Pool, cpu_count
@@ -37,25 +37,25 @@ def build_output(target:str, settings:Dict):
     for cell_line in tqdm(get_cell_lines(target), desc="Cell lines output"):
         classes = load_raw_classes(target, cell_line)
         for task in settings["tasks"]:
-            validation_path = get_output_model_validation_path(target, cell_line, task["name"])
             task_classes = pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])
-            if not is_cached(validation_path):
-                kwarged_job({
-                    "classes":task_classes,
-                    "random_state":settings["test_random_state"],
-                    "test_size":settings["test_size"],
-                    "path":validation_path
-                })
-            classes_train, _ = train_test_split(
-                task_classes, random_state=settings["test_random_state"], test_size=settings["test_size"]
-            )
             jobs = [
                 {
-                    "classes":classes_train,
+                    "classes":task_classes,
                     "random_state":settings["validation_starting_random_state"]+holdout,
-                    "test_size":settings["validation_size"],
-                    "path":get_output_model_selelection_path(target, cell_line, task["name"], holdout)
-                } for holdout in range(settings["holdouts"]) if not is_cached(get_output_model_selelection_path(target, cell_line, task["name"], holdout))
+                    "test_size":settings["validation_test_size"],
+                    "path":get_output_model_validation_path(target, cell_line, task["name"], holdout)
+                } for holdout in range(settings["validation_holdouts"]) if not is_cached(get_output_model_selection_path(target, cell_line, task["name"], holdout))
+            ]
+            classes_train, _ = train_test_split(
+                task_classes, random_state=settings["selection_starting_random_state"], test_size=settings["validation_test_size"]
+            )
+            jobs += [
+                {
+                    "classes":classes_train,
+                    "random_state":settings["selection_starting_random_state"]+holdout,
+                    "test_size":settings["selection_test_size"],
+                    "path":get_output_model_selection_path(target, cell_line, task["name"], holdout)
+                } for holdout in range(settings["selection_holdouts"]) if not is_cached(get_output_model_selection_path(target, cell_line, task["name"], holdout))
             ]
             if len(jobs):
                 with Pool(cpu_count()) as p:
