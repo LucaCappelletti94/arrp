@@ -5,8 +5,7 @@ import os
 
 
 def one_hot_encode_expanded_regions(target: str):
-    regions = get_cell_lines(target)
-    print("One-hot encode nucleotides windows.")
+    cell_lines = get_cell_lines(target)
     os.makedirs(
         "{target}/one_hot_encoded_expanded_regions".format(target=target), exist_ok=True)
     encoder = FastaOneHotEncoder(
@@ -15,15 +14,15 @@ def one_hot_encode_expanded_regions(target: str):
         lower=True,
         sparse=False
     )
-    for region in tqdm(regions, leave=False, desc="Cell lines"):
-        path = "{target}/one_hot_encoded_expanded_regions/{region}.csv".format(
-            region=region,
+    for cell_line in tqdm(cell_lines, leave=False, desc="One-hot encode nucleotides"):
+        path = "{target}/one_hot_encoded_expanded_regions/{cell_line}.csv".format(
+            cell_line=cell_line,
             target=target
         )
         if os.path.exists(path):
             continue
-        expand_region_path = "{target}/expanded_regions/{region}.fa".format(
-            region=region,
+        expand_cell_line_path = "{target}/expanded_regions/{cell_line}.fa".format(
+            cell_line=cell_line,
             target=target
         )
-        encoder.transform_to_df(expand_region_path).to_csv(path)
+        encoder.transform_to_df(expand_cell_line_path).to_csv(path)

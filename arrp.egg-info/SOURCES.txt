@@ -26,8 +26,8 @@ arrp/utils/get_cell_lines.py
 arrp/utils/is_notebook.py
 arrp/utils/load_settings.py
 arrp/utils/mkdir.py
+arrp/utils/one_hot_encode_classes.py
 arrp/utils/one_hot_encode_expanded_regions.py
-arrp/utils/one_hot_encode_regions.py
 arrp/utils/tqdm.py
 arrp/utils/ungzip.py
 arrp/utils/ungzip_data.py

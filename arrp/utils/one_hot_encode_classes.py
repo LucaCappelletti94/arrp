@@ -1,6 +1,7 @@
 from .get_cell_lines import get_cell_lines
 import pandas as pd
 import os
+from .tqdm import tqdm
 from sklearn.preprocessing import OneHotEncoder
 
 
@@ -13,11 +14,10 @@ def one_hot_encode(classes, filename):
         dtype="int").to_csv(filename)
 
 
-def one_hot_encode_regions(target: str):
-    print("One-hot encode classes.")
+def one_hot_encode_classes(target: str):
     os.makedirs(
         "{target}/one_hot_encoded_classes".format(target=target), exist_ok=True)
-    for region in get_cell_lines(target):
+    for region in tqdm(get_cell_lines(target), desc="One-hot encode classes"):
         region_classes = "{target}/classes/{region}.csv".format(
             region=region,
             target=target
