@@ -12,13 +12,35 @@
         "max":3000
     },
     "genome": "hg19",
-    "selection_holdouts":4,
+    "selection_holdouts":5,
     "validation_holdouts":5,
-    "epochs":100,
-    "batch_size":100,
-    "n_calls":30,
-    "gaussian_process_acquisition_function":"gp_hedge",
-    "n_random_starts":5,
+    "training":{
+        "epochs":100,
+        "batch_size":100,
+        "shuffle":true,
+        "early_stopping":{
+            "monitor":"val_auprc",
+            "min_delta":0.0001,
+            "patience":10,
+            "mode":"max"
+        },
+        "plateau":{
+            "monitor":"auprc",
+            "factor":0.1,
+            "patience":5,
+            "mode":"max",
+            "min_delta":0.0001,
+            "cooldown":0,
+            "min_lr":0.001
+        }
+    },
+    "gaussian_process":{
+        "acquisition_function":"gp_hedge",
+        "monitor":"val_auprc",
+        "n_calls":50,
+        "n_random_starts":5,
+        "random_state":42
+    },
     "selection_test_size":0.1,
     "validation_test_size":0.3,
     "selection_starting_random_state":314,
