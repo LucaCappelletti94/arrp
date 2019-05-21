@@ -12,14 +12,14 @@
         "max":3000
     },
     "genome": "hg19",
-    "selection_holdouts":5,
+    "selection_holdouts":3,
     "validation_holdouts":5,
     "training":{
         "epochs":100,
         "batch_size":100,
         "shuffle":true,
         "early_stopping":{
-            "monitor":"val_auprc",
+            "monitor":"auprc",
             "min_delta":0.0001,
             "patience":10,
             "mode":"max"
@@ -37,8 +37,8 @@
     "gaussian_process":{
         "acquisition_function":"gp_hedge",
         "monitor":"val_auprc",
-        "n_calls":50,
-        "n_random_starts":5,
+        "n_calls":30,
+        "n_random_starts":3,
         "random_state":42
     },
     "selection_test_size":0.1,

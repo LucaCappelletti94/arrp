@@ -32,8 +32,6 @@ def is_cached(path:str)->bool:
     ])
 
 def job(epigenomic_data:pd.DataFrame, nucleotides_sequences:np.ndarray, nucleotides_sequences_index:np.ndarray, nucleotides_sequences_columns:np.ndarray, random_state:int, test_size:float, path:str):
-    if is_cached(path):
-        return 0
     epigenomic_data_train, epigenomic_data_test, nucleotides_sequences_train, nucleotides_sequences_test, nucleotides_sequences_index_train, nucleotides_sequences_index_test = train_test_split(
         epigenomic_data, nucleotides_sequences, nucleotides_sequences_index, random_state=random_state, test_size=test_size
     )
@@ -49,32 +47,40 @@ def build_input(target:str, settings:Dict):
     for cell_line in tqdm(get_cell_lines(target), desc="Cell lines input"):
         epigenomic_data = load_raw_epigenomic_data(target, cell_line)
         nucleotides_sequences, nucleotides_sequences_index, nucleotides_sequences_columns = load_raw_nucleotides_sequences(target, cell_line)
-        jobs = []
+        outer_jobs = []
         for outer in range(settings["validation_holdouts"]):
             seed = settings["validation_starting_random_state"]+outer
-            jobs.append({
-                "epigenomic_data":epigenomic_data,
-                "nucleotides_sequences":nucleotides_sequences,
-                "nucleotides_sequences_index":nucleotides_sequences_index,
-                "nucleotides_sequences_columns":nucleotides_sequences_columns,
-                "random_state":seed,
-                "test_size":settings["validation_test_size"],
-                "path":get_input_model_validation_path(target, cell_line, outer)
-            })
+            path = get_input_model_validation_path(target, cell_line, outer)
+            if not is_cached(path):
+                outer_jobs.append({
+                    "epigenomic_data":epigenomic_data,
+                    "nucleotides_sequences":nucleotides_sequences,
+                    "nucleotides_sequences_index":nucleotides_sequences_index,
+                    "nucleotides_sequences_columns":nucleotides_sequences_columns,
+                    "random_state":seed,
+                    "test_size":settings["validation_test_size"],
+                    "path":get_input_model_validation_path(target, cell_line, outer)
+                })
             epigenomic_data_train, _, nucleotides_sequences_train, _, nucleotides_sequences_index_train, _ = train_test_split(
                 epigenomic_data, nucleotides_sequences, nucleotides_sequences_index, random_state=seed, test_size=settings["validation_test_size"]
             )
-            jobs += [
-                {
-                    "epigenomic_data":epigenomic_data_train,
-                    "nucleotides_sequences":nucleotides_sequences_train,
-                    "nucleotides_sequences_index":nucleotides_sequences_index_train,
-                    "nucleotides_sequences_columns":nucleotides_sequences_columns,
-                    "random_state":settings["selection_starting_random_state"]+inner,
-                    "test_size":settings["selection_test_size"],
-                    "path":get_input_model_selection_path(target, cell_line, outer, inner)
-                } for inner in range(settings["selection_holdouts"])
-            ]
-        if len(jobs):
+            inner_jobs = []
+            for inner in range(settings["selection_holdouts"]):
+                path = get_input_model_selection_path(target, cell_line, outer, inner)
+                if not is_cached(path):
+                    inner_jobs.append({
+                        "epigenomic_data":epigenomic_data_train,
+                        "nucleotides_sequences":nucleotides_sequences_train,
+                        "nucleotides_sequences_index":nucleotides_sequences_index_train,
+                        "nucleotides_sequences_columns":nucleotides_sequences_columns,
+                        "random_state":settings["selection_starting_random_state"]+inner,
+                        "test_size":settings["selection_test_size"],
+                        "path":path
+                    })
+            if len(inner_jobs):
+                with Pool(cpu_count()) as p:
+                    list(tqdm(p.imap(kwarged_job, inner_jobs), desc="Inner holdouts", leave=False, total=len(inner_jobs)))
+        if len(outer_jobs):
             with Pool(cpu_count()) as p:
-                list(tqdm(p.imap(kwarged_job, jobs), desc="Holdouts", leave=False, total=len(jobs)))
+                list(tqdm(p.imap(kwarged_job, outer_jobs), desc="Outer holdouts", leave=False, total=len(outer_jobs)))
+                
