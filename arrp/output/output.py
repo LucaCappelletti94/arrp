@@ -38,7 +38,7 @@ def kwarged_job(kwargs):
 def build_output(target:str, settings:Dict):
     for cell_line in tqdm(get_cell_lines(target), desc="Cell lines output"):
         classes = load_raw_classes(target, cell_line)
-        for task in tqdm(settings["tasks"], desc="Tasks output"):
+        for task in tqdm(settings["tasks"], desc="Tasks output", leave=False):
             task_classes = pd.DataFrame(classes[task["positive"]].any(axis=1), columns=["+".join(task["positive"])])
             jobs = []
             for outer in range(settings["validation_holdouts"]):
