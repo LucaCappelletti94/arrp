@@ -39,7 +39,11 @@
         "monitor":"val_auprc",
         "n_calls":2,
         "n_random_starts":1,
-        "random_state":42
+        "random_state":42,
+        "early_stopping":{
+            "delta":0.005,
+            "n_best":4
+        }
     },
     "selection_test_size":0.1,
     "validation_test_size":0.3,
