@@ -17,13 +17,13 @@
     "training":{
         "fit":{
             "epochs":1000,
-            "batch_size":100,
+            "batch_size":1000,
             "shuffle":true
         },
         "early_stopping":{
             "monitor":"auprc",
             "min_delta":0.001,
-            "patience":10,
+            "patience":20,
             "mode":"max",
             "verbose":0,
             "restore_best_weights":true
@@ -31,7 +31,7 @@
         "plateau":{
             "monitor":"auprc",
             "factor":0.1,
-            "patience":5,
+            "patience":10,
             "mode":"max",
             "min_delta":0.001,
             "cooldown":0,
@@ -49,7 +49,7 @@
         },
         "early_stopping":{
             "delta":0.001,
-            "n_best":4
+            "n_best":10
         }
     },
     "selection_test_size":0.1,
