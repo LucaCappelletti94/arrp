@@ -16,13 +16,7 @@ def store_nucleotides_sequences(path:str, data:np.ndarray, index:np.ndarray, col
         index.reshape(-1),
         columns
     )
-
-def store_epigenomic_data(path:str, epigenomic_data:pd.DataFrame):
-    return store_csv(path, epigenomic_data.values, epigenomic_data.index, epigenomic_data.columns)
-
-def store_classes(path:str, classes:pd.DataFrame):
-    return store_csv(path, classes.values, classes.index, classes.columns)
-
+    
 def store_raw_epigenomic_data(target:str, cell_line:str, epigenomic_data:pd.DataFrame):
     return store_csv(get_raw_epigenomic_data_path(target, cell_line), epigenomic_data.values, epigenomic_data.index, epigenomic_data.columns)
 
