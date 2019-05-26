@@ -12,8 +12,11 @@
         "max":3000
     },
     "genome": "hg19",
-    "selection_holdouts":2,
-    "validation_holdouts":3,
+    "holdouts":{
+        "test_sizes":[0.3, 0.1],
+        "quantities":[3, 5]
+    },
+    "random_seed":42,
     "training":{
         "epochs":3,
         "batch_size":1000,
@@ -45,10 +48,6 @@
             "n_best":4
         }
     },
-    "selection_test_size":0.1,
-    "validation_test_size":0.3,
-    "selection_starting_random_state":314,
-    "validation_starting_random_state":42,
     "tasks": [
         {
             "name": "Active enhancers vs active promoters",

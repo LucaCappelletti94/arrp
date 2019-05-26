@@ -1,11 +1,11 @@
-from arrp import tasks_generator, validation_holdouts_generator, selection_holdouts_generator
-from arrp.utils import tqdm, load_settings
+from arrp import tasks_generator,balanced_holdouts_generator
+from arrp.utils import tqdm
+from holdouts_generator import clear_holdouts_cache
 
 def test_load():
     target = "test_dataset"
-    settings = load_settings(target)
     for task in tqdm(list(tasks_generator(target)), desc="Jobs"):
-        for outer, _ in enumerate(tqdm(validation_holdouts_generator(*task), desc="Validation holdouts", total=settings["validation_holdouts"])):
-            [
-                _ for _ in tqdm(selection_holdouts_generator(*task, outer=outer), desc="Selection holdouts", total=settings["selection_holdouts"])
-            ]
+        for _, sub in balanced_holdouts_generator(*task)():
+            for _, _ in sub():
+                pass
+    clear_holdouts_cache(".holdouts")

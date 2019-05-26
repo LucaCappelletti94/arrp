@@ -51,6 +51,9 @@ By default it uses hg19_, as it is the genome used in the labeled data currently
    :target: https://codeclimate.com/github/LucaCappelletti94/arrp/maintainability
    :alt: Maintainability
 
+.. |pip| image:: https://badge.fury.io/py/arrp.svg
+    :target: https://badge.fury.io/py/arrp
+
 .. |bases| image:: https://github.com/LucaCappelletti94/arrp/blob/master/bases.png?raw=true
    :alt: Bases
 
