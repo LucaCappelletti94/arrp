@@ -1,7 +1,7 @@
 from .get_cell_lines import get_cell_lines
 import pandas as pd
 import os
-from .tqdm import tqdm
+from auto_tqdm import tqdm
 from sklearn.preprocessing import OneHotEncoder
 
 

@@ -1,7 +1,7 @@
 import subprocess
 import os
 from .get_cell_lines import get_cell_lines
-from .tqdm import tqdm
+from auto_tqdm import tqdm
 
 def expand_regions(target: str, genome: str):
     """Expand the genomic regions using data withing given target and genome."""

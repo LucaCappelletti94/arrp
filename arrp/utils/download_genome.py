@@ -1,5 +1,5 @@
 from multiprocessing import Pool, cpu_count
-from .tqdm import tqdm
+from auto_tqdm import tqdm
 import glob
 import shutil
 import os

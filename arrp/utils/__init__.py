@@ -6,5 +6,4 @@ from .get_cell_lines import get_cell_lines
 from .ungzip_data import ungzip_data
 from .balance import balance
 from .load_settings import load_settings
-from .tqdm import tqdm
 from .mkdir import mkdir
