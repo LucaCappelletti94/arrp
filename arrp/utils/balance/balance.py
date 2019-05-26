@@ -9,8 +9,8 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         balancing_max: int, maximum numbers per balancing maximum
         output: int, expected output class.
     """
-    output_class_mask = (classes == output).values
-    retain_mask = (classes != output).values
+    output_class_mask = np.array(classes == output)
+    retain_mask = np.bitwise_not(output_class_mask)
     n = np.sum(output_class_mask)
     if n > balancing_max:
         datapoints_to_remove = n - balancing_max
@@ -32,16 +32,16 @@ def balanced(*dataset_split:Tuple, balancing_max: int)->Tuple:
         balancing_max: int, balancing maximum.
     """
     assert isinstance(balancing_max, int)
-    y_train = dataset_split[-2]
+    n = int(len(dataset_split)/2) - 1
+    y_train = dataset_split[n]
 
     balanced_dataset_split = []
     
-    for i, array in enumerate(dataset_split):
-        if i%2==0: # Balance only training data
-            for output_class in [0, 1]:
-                array = balance_generic(
-                    array, y_train, balancing_max, output_class
-                )
+    for array in enumerate(dataset_split[:n]):
+        for output_class in [0, 1]:
+            array = balance_generic(
+                array, y_train, balancing_max, output_class
+            )
         balanced_dataset_split.append(array)
         
     return balanced_dataset_split
@@ -55,15 +55,15 @@ def full_balanced(*dataset_split:Tuple, balancing_max:int, rate: Tuple[int, int]
     """
     assert isinstance(rate, tuple) and all(isinstance(v, int) for v in rate)
     dataset_split = balanced(*dataset_split, balancing_max=balancing_max)
+    n = int(len(dataset_split)/2) - 1
     y_test = dataset_split[-1]
     balanced_dataset_split = []
-    
-    for i, array in enumerate(dataset_split):
-        if i%2==1: # Balance only testing data
-            for output_class in [0, 1]:
-                opposite = 1 - output_class
-                array = balance_generic(
-                    array, y_test, int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
+
+    for array in dataset_split[n:]:
+        for output_class in [0, 1]:
+            opposite = 1 - output_class
+            array = balance_generic(
+                array, y_test, int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
         balanced_dataset_split.append(array)
             
     return balanced_dataset_split

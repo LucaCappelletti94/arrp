@@ -12,8 +12,11 @@
         "max":3000
     },
     "genome": "hg19",
-    "selection_holdouts":3,
-    "validation_holdouts":5,
+    "holdouts":{
+        "test_sizes":[0.3, 0.1],
+        "quantities":[3, 5]
+    },
+    "random_seed":42,
     "training":{
         "fit":{
             "epochs":1000,
@@ -23,7 +26,7 @@
         "early_stopping":{
             "monitor":"auprc",
             "min_delta":0.001,
-            "patience":20,
+            "patience":5,
             "mode":"max",
             "verbose":0,
             "restore_best_weights":true
@@ -31,9 +34,9 @@
         "plateau":{
             "monitor":"auprc",
             "factor":0.1,
-            "patience":10,
+            "patience":5,
             "mode":"max",
-            "min_delta":0.001,
+            "min_delta":0.005,
             "cooldown":0,
             "min_lr":0.001,
             "verbose":0
@@ -52,10 +55,6 @@
             "n_best":10
         }
     },
-    "selection_test_size":0.1,
-    "validation_test_size":0.3,
-    "selection_starting_random_state":314,
-    "validation_starting_random_state":42,
     "tasks": [
         {
             "name": "Active enhancers vs active promoters",
