@@ -10,7 +10,7 @@ def balanced_generator(generator, mode:str, pos:str, neg:str, settings:Dict)->Ca
         return None
     def wrapper():
         for (training, testing), sub_generator in generator():
-            balanced = balance((*training, *testing), mode, pos, neg, settings)
+            balanced = balance(training, testing, mode, pos, neg, settings)
             training, testing = balanced[:len(training)], balanced[len(training):]
             yield (training, testing), balanced_generator(sub_generator, mode, pos, neg, settings)
     return wrapper
