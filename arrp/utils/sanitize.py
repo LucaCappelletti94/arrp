@@ -3,7 +3,7 @@ import pandas as pd
 from typing import Tuple
 from .load_csv import load_raw_classes, load_raw_epigenomic_data, load_raw_nucleotides_sequences
 from .store_csv import store_raw_classes, store_raw_epigenomic_data, store_raw_nucleotides_sequences
-from .utils import get_cell_lines
+from .get_cell_lines import get_cell_lines
 from auto_tqdm import tqdm
 
 def drop_unknown_datapoints(epigenomic_data:pd.DataFrame, nucleotides_sequences:np.ndarray, nucleotides_sequences_index:np.ndarray, classes:pd.DataFrame)->Tuple[pd.DataFrame, np.ndarray, np.ndarray, pd.DataFrame]:
