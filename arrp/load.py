@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
 from typing import Dict, Callable
-from .utils import load_settings, balance, get_cell_lines
-from .load_csv import load_raw_nucleotides_sequences, load_raw_classes, load_raw_epigenomic_data
+from .utils import load_settings, balance, get_cell_lines, load_raw_nucleotides_sequences, load_raw_classes, load_raw_epigenomic_data
 from holdouts_generator import random_holdouts, holdouts_generator
 
 def balanced_generator(generator, mode:str, pos:str, neg:str, settings:Dict)->Callable:

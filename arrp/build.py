@@ -1,5 +1,4 @@
-from .utils import expand_regions, one_hot_encode_classes, one_hot_encode_expanded_regions, ungzip_data, load_settings
-from .sanitize import sanitize
+from .utils import expand_regions, one_hot_encode_classes, one_hot_encode_expanded_regions, ungzip_data, load_settings, sanitize
 from ucsc_genomes_downloader import download_genome
 
 def build(target:str):

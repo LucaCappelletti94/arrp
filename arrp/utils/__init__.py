@@ -5,3 +5,5 @@ from .get_cell_lines import get_cell_lines
 from .ungzip_data import ungzip_data
 from .balance import balance
 from .load_settings import load_settings
+from .sanitize import sanitize
+from .load_csv import load_raw_classes, load_raw_epigenomic_data, load_raw_nucleotides_sequences
