@@ -4,13 +4,13 @@ from typing import Dict, Callable
 from .utils import load_settings, balance, get_cell_lines, load_raw_nucleotides_sequences, load_raw_classes, load_raw_epigenomic_data
 from holdouts_generator import random_holdouts, holdouts_generator
 
+
 def balanced_generator(generator, mode:str, pos:str, neg:str, settings:Dict)->Callable:
     if generator is None:
         return None
     def wrapper():
         for (training, testing), sub_generator in generator():
-            balanced = balance(training, testing, mode, pos, neg, settings)
-            training, testing = balanced[:len(training)], balanced[len(training):]
+            training, testing = balance(training, testing, mode, pos, neg, settings)
             yield (training, testing), balanced_generator(sub_generator, mode, pos, neg, settings)
     return wrapper
 

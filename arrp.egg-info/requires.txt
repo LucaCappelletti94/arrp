@@ -1,9 +1,11 @@
-tqdm
+auto_tqdm
 typing
 pandas
 sklearn
 fasta_one_hot_encoder
 requests
+holdouts_generator
+ucsc_genomes_downloader
 
 [test]
 pytest
