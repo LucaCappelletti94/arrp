@@ -59,6 +59,3 @@ By default it uses hg19_, as it is the genome used in the labeled data currently
 
 .. |kmers| image:: https://github.com/LucaCappelletti94/arrp/raw/master/kmers.png
    :alt: Kmers
-
-.. |pip| image:: https://badge.fury.io/py/arrp.svg
-    :target: https://badge.fury.io/py/arrp
