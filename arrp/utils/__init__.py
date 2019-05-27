@@ -1,4 +1,3 @@
-from .download_genome import download_genome
 from .expand_regions import expand_regions
 from .one_hot_encode_classes import one_hot_encode_classes
 from .one_hot_encode_expanded_regions import one_hot_encode_expanded_regions
