@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from typing import Tuple, Dict
 
 
@@ -9,6 +10,10 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         balancing_max: int, maximum numbers per balancing maximum
         output: int, expected output class.
     """
+    assert isinstance(balancing_max, int)
+    assert isinstance(output, int)
+    assert isinstance(classes, (np.ndarray, pd.DataFrame))
+    assert isinstance(array, (np.ndarray, pd.DataFrame))
     output_class_mask = np.array(classes == output)
     retain_mask = np.bitwise_not(output_class_mask)
     n = np.sum(output_class_mask)
@@ -21,52 +26,52 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         array = array[np.logical_or(output_class_mask, retain_mask).reshape(-1)]
     return array
 
-def umbalanced(*dataset_split:Tuple)->Tuple:
+def umbalanced(training:Tuple, testing:Tuple)->Tuple:
     """Leave data as they are."""
-    return dataset_split
+    return training, testing
 
 
-def balanced(*dataset_split:Tuple, balancing_max: int)->Tuple:
+def balanced(training:Tuple, testing:Tuple, balancing_max: int)->Tuple:
     """Balance training set using given balancing maximum.
         *dataset_split:Tuple, Tuple of arrays.
         balancing_max: int, balancing maximum.
     """
     assert isinstance(balancing_max, int)
-    n = int(len(dataset_split)/2) - 1
-    y_train = dataset_split[n]
+    y_train = training[-1]
 
-    balanced_dataset_split = []
+    new_training = []
     
-    for array in enumerate(dataset_split[:n]):
+    for array in training:
         for output_class in [0, 1]:
             array = balance_generic(
                 array, y_train, balancing_max, output_class
             )
-        balanced_dataset_split.append(array)
-        
-    return balanced_dataset_split
+        new_training.append(array)
+
+    return new_training, testing
 
 
-def full_balanced(*dataset_split:Tuple, balancing_max:int, rate: Tuple[int, int])->Tuple:
+def full_balanced(training:Tuple, testing:Tuple, balancing_max:int, rate: Tuple[int, int])->Tuple:
     """Balance training set using given balancing maximum.
         *dataset_split:Tuple, Tuple of arrays.
         balancing_max: int, balancing maximum.
         rate: Tuple[int, int], rates beetween the two classes.
     """
+    assert isinstance(balancing_max, int)
     assert isinstance(rate, tuple) and all(isinstance(v, int) for v in rate)
-    dataset_split = balanced(*dataset_split, balancing_max=balancing_max)
-    n = int(len(dataset_split)/2) - 1
-    y_test = dataset_split[-1]
-    balanced_dataset_split = []
+    training, testing = balanced(training, testing, balancing_max=balancing_max)
+    y_test = testing[-1]
+    new_testing = []
 
-    for array in dataset_split[n:]:
+    for array in testing:
         for output_class in [0, 1]:
             opposite = 1 - output_class
             array = balance_generic(
-                array, y_test, int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
-        balanced_dataset_split.append(array)
+                array, y_test, 
+                int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
+        new_testing.append(array)
             
-    return balanced_dataset_split
+    return training, testing
 
 balancing_callbacks = {
     "umbalanced": umbalanced,
@@ -74,7 +79,7 @@ balancing_callbacks = {
     "full_balanced": full_balanced
 }
 
-def get_balancing_kwargs(balance_mode:str, positive_class:str, negative_class:str, settings:Dict):
+def get_balancing_kwargs(mode:str, positive_class:str, negative_class:str, settings:Dict):
     class_balancing = settings["class_balancing"]
     kwargs = {
         "umbalanced": {},
@@ -86,8 +91,9 @@ def get_balancing_kwargs(balance_mode:str, positive_class:str, negative_class:st
             "balancing_max": settings["max"]
         }
     }
-    return kwargs[balance_mode]
+    return kwargs[mode]
 
-def balance(dataset_split:Tuple, balance_mode:str, positive_class:str, negative_class:str, settings:Dict)->Tuple:
+def balance(training:Tuple, testing:Tuple, mode:str, positive_class:str, negative_class:str, settings:Dict)->Tuple:
     global balancing_callbacks
-    return balancing_callbacks[balance_mode](*dataset_split, **get_balancing_kwargs(balance_mode, positive_class, negative_class, settings))
+    return balancing_callbacks[mode](training, testing, **get_balancing_kwargs(mode, positive_class, negative_class, settings))
+    

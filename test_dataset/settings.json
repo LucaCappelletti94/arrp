@@ -9,7 +9,7 @@
             "I-X": 1,
             "UK": 10
         },
-        "max":3000
+        "max":50
     },
     "genome": "hg19",
     "holdouts":{
