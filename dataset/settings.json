@@ -44,10 +44,10 @@
     },
     "gaussian_process":{
         "monitor":"val_auprc",
-        "fit":{
+        "tune":{
             "acq_func":"gp_hedge",
-            "n_calls":50,
-            "n_random_starts":5,
+            "n_calls":1,
+            "n_random_starts":1,
             "random_state":42    
         },
         "early_stopping":{

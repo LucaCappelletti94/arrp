@@ -14,38 +14,44 @@
     "genome": "hg19",
     "holdouts":{
         "test_sizes":[0.3, 0.1],
-        "quantities":[3, 5]
+        "quantities":[1, 1]
     },
     "random_seed":42,
     "training":{
-        "epochs":3,
-        "batch_size":1000,
-        "shuffle":true,
+        "fit":{
+            "epochs":1,
+            "batch_size":1000
+        },
         "early_stopping":{
-            "monitor":"val_auprc",
-            "min_delta":0.01,
-            "patience":2,
-            "mode":"max"
+            "monitor":"auprc",
+            "min_delta":0.001,
+            "patience":5,
+            "mode":"max",
+            "verbose":0,
+            "restore_best_weights":true
         },
         "plateau":{
             "monitor":"auprc",
             "factor":0.1,
             "patience":5,
             "mode":"max",
-            "min_delta":0.0001,
+            "min_delta":0.005,
             "cooldown":0,
-            "min_lr":0.001
+            "min_lr":0.001,
+            "verbose":0
         }
     },
     "gaussian_process":{
-        "acquisition_function":"gp_hedge",
         "monitor":"val_auprc",
-        "n_calls":2,
-        "n_random_starts":1,
-        "random_state":42,
+        "tune":{
+            "acq_func":"gp_hedge",
+            "n_calls":1,
+            "n_random_starts":1,
+            "random_state":42    
+        },
         "early_stopping":{
-            "delta":0.005,
-            "n_best":4
+            "delta":0.001,
+            "n_best":10
         }
     },
     "tasks": [
