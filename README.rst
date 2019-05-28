@@ -1,4 +1,4 @@
-Active regulatory regions prediction dataset renderer
+Active regulatory regions prediction
 ===================================================================
 |travis| |sonar_quality| |sonar_maintainability| |sonar_coverage| |code_climate_maintainability| |pip|
 
@@ -30,6 +30,35 @@ Which genome does it use?
 ----------------------------------------
 By default it uses hg19_, as it is the genome used in the labeled data currently available from the Wasserman team. This is one of the numerous settings available.
 
+Running the code
+----------------------------
+Once you have rendered the dataset from the arrp_ package (follow the instructions there) you can run the following snippets:
+
+CNN
+----------
+
+.. code:: python
+   
+   from arrp_NNs import cnn
+   cnn(target="dataset")
+  
+MLP
+----------
+
+.. code:: python
+   
+   from arrp_NNs import mlp
+   mlp(target="dataset")
+   
+Multi-modal neural network
+------------------------------
+
+.. code:: python
+   
+   from arrp_NNs import mmnn
+   mmnn(target="dataset")
+
+
 
 .. _hg19: https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.13/
 .. _bedtools: https://bedtools.readthedocs.io/en/latest/
@@ -53,9 +82,3 @@ By default it uses hg19_, as it is the genome used in the labeled data currently
 
 .. |pip| image:: https://badge.fury.io/py/arrp.svg
     :target: https://badge.fury.io/py/arrp
-
-.. |bases| image:: https://github.com/LucaCappelletti94/arrp/blob/master/bases.png?raw=true
-   :alt: Bases
-
-.. |kmers| image:: https://github.com/LucaCappelletti94/arrp/raw/master/kmers.png
-   :alt: Kmers
