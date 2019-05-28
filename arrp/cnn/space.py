@@ -3,7 +3,7 @@ from gaussian_process import Space
 space = Space({
     "convolutionals":[{
         "Conv1D_kwargs":{
-            "filters":[32, 512],
+            "filters":[32, 256],
             "kernel_size":[5,20],
             "activation":"relu",
         },
@@ -14,7 +14,7 @@ space = Space({
     },
     {
         "Conv1D_kwargs":{
-            "filters":[32, 512],
+            "filters":[16, 256],
             "kernel_size":[5,20],
             "activation":"relu",
         },
