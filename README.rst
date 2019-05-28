@@ -32,7 +32,7 @@ By default it uses hg19_, as it is the genome used in the labeled data currently
 
 Running the code
 ----------------------------
-Once you have rendered the dataset from the arrp_ package (follow the instructions there) you can run the following snippets:
+Once you have rendered the dataset you can run the following snippets:
 
 CNN
 ----------
