@@ -84,6 +84,7 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     tests_require=test_deps,
     install_requires=[
+        'notipy_me',
         'gaussian_process',
         'fasta_one_hot_encoder',
         'pandas',
