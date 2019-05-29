@@ -3,10 +3,12 @@ from keras.layers import Layer, Dense
 from keras.models import Model
 from typing import Tuple
 
-def head(layer:Layer)->Layer:
+
+def head(layer: Layer)->Layer:
     return Dense(1, activation="sigmoid")(layer)
 
-def model(inputs:Tuple[Layer, Layer], output:Layer)->Model:
+
+def model(inputs: Tuple[Layer, Layer], output: Layer)->Model:
     model = Model(
         inputs=inputs,
         outputs=[head(output)]
@@ -14,6 +16,7 @@ def model(inputs:Tuple[Layer, Layer], output:Layer)->Model:
     model.compile(
         optimizer="nadam",
         loss="binary_crossentropy",
-        metrics=["auprc", "auroc", "accuracy"]
+        metrics=["auprc", "auroc", "accuracy", "false_negatives", "false_positives",
+                 "true_negatives", "true_positives", "precision", "recall"]
     )
     return model
