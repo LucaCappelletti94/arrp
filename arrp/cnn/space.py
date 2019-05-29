@@ -10,7 +10,7 @@ space = Space({
         "MaxPooling1D_kwargs":{
             "pool_size":(2,)
         },
-        "layers":[1,4]
+        "layers":[1,3]
     },
     {
         "Conv1D_kwargs":{
@@ -21,7 +21,7 @@ space = Space({
         "MaxPooling1D_kwargs":{
             "pool_size":(2,)
         },
-        "layers":[1,4]
+        "layers":[1,3]
     }],
     "dense":[{
         "layers":2,
