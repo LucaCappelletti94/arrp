@@ -88,7 +88,7 @@ def model_selection(target:str, name:str, structure:Callable, space:Space):
             mlp_space["input_shape"] = (training[0]["mlp"].shape[1],)
             tuner = ModelTuner(structure, space, inner_holdouts, settings["training"], settings["gaussian_process"]["monitor"])
             best_parameters = tuner.tune(
-                cache_dir="{path}/.gaussian_cache".format(path=path),
+                cache_dir="{path}/{i}/.gaussian_cache".format(path=path, i=i),
                 callback=[
                     TQDMGaussianProcess(n_calls=settings["gaussian_process"]["tune"]["n_calls"]),
                     DeltaYStopper(**settings["gaussian_process"]["early_stopping"])
