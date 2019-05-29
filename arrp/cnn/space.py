@@ -3,8 +3,8 @@ from gaussian_process import Space
 space = Space({
     "convolutionals":[{
         "Conv1D_kwargs":{
-            "filters":[32, 256],
-            "kernel_size":[5,20],
+            "filters":[32, 128],
+            "kernel_size":[5,15],
             "activation":"relu",
         },
         "MaxPooling1D_kwargs":{
@@ -14,8 +14,8 @@ space = Space({
     },
     {
         "Conv1D_kwargs":{
-            "filters":[16, 256],
-            "kernel_size":[5,20],
+            "filters":[16, 128],
+            "kernel_size":[5,15],
             "activation":"relu",
         },
         "MaxPooling1D_kwargs":{
