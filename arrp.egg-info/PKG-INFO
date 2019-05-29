@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: arrp
-Version: 2.1.0
+Version: 2.2.0
 Summary: Simple python package to render the holdouts and training datasets of active regulatory regions for models with the task to predict them.
 Home-page: https://github.com/LucaCappelletti94/arrp
 Author: Luca Cappelletti
 Author-email: cappelletti.luca94@gmail.com
 License: MIT
-Description: Active regulatory regions prediction dataset renderer
+Description: Active regulatory regions prediction
         ===================================================================
         |travis| |sonar_quality| |sonar_maintainability| |sonar_coverage| |code_climate_maintainability| |pip|
         
@@ -38,6 +38,35 @@ Description: Active regulatory regions prediction dataset renderer
         ----------------------------------------
         By default it uses hg19_, as it is the genome used in the labeled data currently available from the Wasserman team. This is one of the numerous settings available.
         
+        Running the code
+        ----------------------------
+        Once you have rendered the dataset you can run the following snippets:
+        
+        CNN
+        ----------
+        
+        .. code:: python
+           
+           from arrp_NNs import cnn
+           cnn(target="dataset")
+          
+        MLP
+        ----------
+        
+        .. code:: python
+           
+           from arrp_NNs import mlp
+           mlp(target="dataset")
+           
+        Multi-modal neural network
+        ------------------------------
+        
+        .. code:: python
+           
+           from arrp_NNs import mmnn
+           mmnn(target="dataset")
+        
+        
         
         .. _hg19: https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.13/
         .. _bedtools: https://bedtools.readthedocs.io/en/latest/
@@ -62,11 +91,6 @@ Description: Active regulatory regions prediction dataset renderer
         .. |pip| image:: https://badge.fury.io/py/arrp.svg
             :target: https://badge.fury.io/py/arrp
         
-        .. |bases| image:: https://github.com/LucaCappelletti94/arrp/blob/master/bases.png?raw=true
-           :alt: Bases
-        
-        .. |kmers| image:: https://github.com/LucaCappelletti94/arrp/raw/master/kmers.png
-           :alt: Kmers
 Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
 Classifier: License :: OSI Approved :: MIT License
