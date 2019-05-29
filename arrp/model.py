@@ -1,7 +1,7 @@
 import extra_keras_metrics
 from keras.layers import Layer, Dense
 from keras.models import Model
-from typing import Tuple
+from typing import Tuple, List
 
 
 def head(layer: Layer)->Layer:
@@ -18,6 +18,6 @@ def model(inputs: Tuple[Layer, Layer], output: Layer, metrics:List=None)->Model:
     model.compile(
         optimizer="nadam",
         loss="binary_crossentropy",
-        metrics=["auprc"]
+        metrics=metrics
     )
     return model
