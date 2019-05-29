@@ -19,7 +19,7 @@
     "random_seed":42,
     "training":{
         "fit":{
-            "epochs":1000,
+            "epochs":500,
             "batch_size":1000
         },
         "early_stopping":{
@@ -45,7 +45,7 @@
         "monitor":"val_auprc",
         "tune":{
             "acq_func":"gp_hedge",
-            "n_calls":100,
+            "n_calls":50,
             "n_random_starts":5,
             "random_state":42    
         },
