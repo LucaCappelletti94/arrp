@@ -15,7 +15,7 @@ class ModelTuner:
     def _score(self, **structure:Dict):
         return average_model_score(self._holdouts, model(*self._structure(**structure)), self._training, self._monitor)
 
-    def tune(self, **kwargs)->Dict:
-        gp = GaussianProcess(self._score, self._space)
+    def tune(self, cache_dir:str, **kwargs)->Dict:
+        gp = GaussianProcess(self._score, self._space, cache_dir=cache_dir)
         gp.minimize(**kwargs)
         return gp.best_parameters

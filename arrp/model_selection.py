@@ -48,6 +48,22 @@ def get_path(name:str, holdout:int, target:str, cell_line:str, task:Dict, balanc
         holdout=holdout
     )
 
+def get_gaussian_process_cache_path(name:str, target:str, cell_line:str, task:Dict, balance_mode:str):
+    return "{target}/{name}/{cell_line}/{task}/{balance_mode}/.gaussian_process".format(
+        target=target,
+        name=name,
+        cell_line=cell_line,
+        task=task["name"].replace(" ", "_"),
+        balance_mode=balance_mode
+    )
+
+def parameters_hash(best_parameters:str)->str:
+    return hash(str(best_parameters))
+
+def is_model_cached(path:str, best_parameters:Dict):
+    with open("{path}/best_parameters.json".format(path=path), "r") as f:
+        return json.load(f)["hash"] == parameters_hash(best_parameters)
+
 def save_results(model:Model, history:Dict, best_parameters:Dict, path:str):
     os.makedirs(path, exist_ok=True)
     model.save("{path}/model.h5".format(path=path))
@@ -65,12 +81,15 @@ def model_selection(target:str, name:str, structure:Callable, space:Space):
             mlp_space["input_shape"] = (training[0]["mlp"].shape[1],)
             tuner = ModelTuner(structure, space, inner_holdouts, settings["training"], settings["gaussian_process"]["monitor"])
             best_parameters = tuner.tune(
+                cache_dir=get_gaussian_process_cache_path(name, *task),
                 callback=[
                     TQDMGaussianProcess(n_calls=settings["gaussian_process"]["tune"]["n_calls"]),
                     DeltaYStopper(**settings["gaussian_process"]["early_stopping"])
                 ],
                 **settings["gaussian_process"]["tune"]
             )
-            best_model = model(*structure(**best_parameters))
-            history = fit(training, testing, best_model, settings["training"])
-            save_results(best_model, history, best_parameters, get_path(name, i, *task))
+            path = get_path(name, i, *task)
+            if not is_model_cached(path, best_parameters):
+                best_model = model(*structure(**best_parameters))
+                history = fit(training, testing, best_model, settings["training"])
+                save_results(best_model, history, best_parameters, path)
