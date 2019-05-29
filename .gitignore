@@ -23,7 +23,6 @@ test_dataset/one_hot_encoded_classes/
 
 test_dataset/one_hot_encoded_expanded_regions/
 .holdouts
-\.gaussian_process/
 test_dataset/cnn
 test_dataset/mlp
 test_dataset/mmnn
