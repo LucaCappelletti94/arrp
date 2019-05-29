@@ -8,15 +8,16 @@ def head(layer: Layer)->Layer:
     return Dense(1, activation="sigmoid")(layer)
 
 
-def model(inputs: Tuple[Layer, Layer], output: Layer)->Model:
+def model(inputs: Tuple[Layer, Layer], output: Layer, metrics:List=None)->Model:
     model = Model(
         inputs=inputs,
         outputs=[head(output)]
     )
+    if metrics is None:
+        metrics = ["auprc"]
     model.compile(
         optimizer="nadam",
         loss="binary_crossentropy",
-        metrics=["auprc", "auroc", "accuracy", "false_negatives", "false_positives",
-                 "true_negatives", "true_positives", "precision", "recall"]
+        metrics=["auprc"]
     )
     return model
