@@ -38,18 +38,8 @@ def dict_holdout_generator(generator)->Generator:
             ), dict_holdout_generator(sub_generator)
     return wrapper
 
-def get_path(name:str, holdout:int, target:str, cell_line:str, task:Dict, balance_mode:str):
-    return "{target}/{name}/{cell_line}/{task}/{balance_mode}/{holdout}".format(
-        target=target,
-        name=name,
-        cell_line=cell_line,
-        task=task["name"].replace(" ", "_"),
-        balance_mode=balance_mode,
-        holdout=holdout
-    )
-
-def get_gaussian_process_cache_path(name:str, target:str, cell_line:str, task:Dict, balance_mode:str):
-    return "{target}/{name}/{cell_line}/{task}/{balance_mode}/.gaussian_process".format(
+def get_path(name:str, target:str, cell_line:str, task:Dict, balance_mode:str):
+    return "{target}/{name}/{cell_line}/{task}/{balance_mode}".format(
         target=target,
         name=name,
         cell_line=cell_line,
@@ -60,12 +50,20 @@ def get_gaussian_process_cache_path(name:str, target:str, cell_line:str, task:Di
 def parameters_hash(best_parameters:str)->str:
     return hash(str(best_parameters))
 
-def is_model_cached(path:str, best_parameters:Dict):
-    with open("{path}/best_parameters.json".format(path=path), "r") as f:
-        return json.load(f)["hash"] == parameters_hash(best_parameters)
+def is_model_cached(path:str, best_parameters:Dict)->bool:
+    hash_path = "{path}/hash.json".format(path=path)
+    if os.path.exists(hash_path):
+        with open(hash_path, "r") as f:
+            return json.load(f)["hash"] == parameters_hash(best_parameters)
+    return False
 
 def save_results(model:Model, history:Dict, best_parameters:Dict, path:str):
     os.makedirs(path, exist_ok=True)
+    hash_path = "{path}/hash.json".format(path=path)
+    with open(hash_path, "w") as f:
+        json.dump({
+            "hash":parameters_hash(best_parameters)
+        }, f)
     model.save("{path}/model.h5".format(path=path))
     plot_history(history)
     plt.savefig("{path}/history.png".format(path=path))
@@ -73,23 +71,32 @@ def save_results(model:Model, history:Dict, best_parameters:Dict, path:str):
     with open("{path}/best_parameters.json".format(path=path), "w") as f:
         json.dump(best_parameters, f, indent=4)
 
+def collect_results(path:str, holdouts:int):
+    pd.concat([
+        pd.read_csv("{path}/{i}/history.csv".format(
+            path=path,
+            i=i
+        ), index_col=0).tail(1) for i in range(holdouts)
+    ]).mean().to_csv("{path}/average_results.csv".format(path=path))
+
 def model_selection(target:str, name:str, structure:Callable, space:Space):
     settings = load_settings(target)
     for task in tqdm(list(filtered_task_generator(target)), desc="Tasks"):
         generator = dict_holdout_generator(balanced_holdouts_generator(*task))
+        path = get_path(name, *task)
         for i, ((training, testing), inner_holdouts) in enumerate(generator()):
             mlp_space["input_shape"] = (training[0]["mlp"].shape[1],)
             tuner = ModelTuner(structure, space, inner_holdouts, settings["training"], settings["gaussian_process"]["monitor"])
             best_parameters = tuner.tune(
-                cache_dir=get_gaussian_process_cache_path(name, *task),
+                cache_dir="{path}/.gaussian_cache".format(path=path),
                 callback=[
                     TQDMGaussianProcess(n_calls=settings["gaussian_process"]["tune"]["n_calls"]),
                     DeltaYStopper(**settings["gaussian_process"]["early_stopping"])
                 ],
                 **settings["gaussian_process"]["tune"]
             )
-            path = get_path(name, i, *task)
-            if not is_model_cached(path, best_parameters):
+            if not is_model_cached("{path}/{i}".format(path=path, i=i), best_parameters):
                 best_model = model(*structure(**best_parameters))
                 history = fit(training, testing, best_model, settings["training"])
-                save_results(best_model, history, best_parameters, path)
+                save_results(best_model, history, best_parameters, "{path}/{i}".format(path=path, i=i))
+        collect_results(path, settings["holdouts"]["quantities"][0])
