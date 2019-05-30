@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
-from typing import Tuple
+from typing import Tuple, Dict
 from .load_csv import load_raw_classes, load_raw_epigenomic_data, load_raw_nucleotides_sequences
 from .store_csv import store_raw_classes, store_raw_epigenomic_data, store_raw_nucleotides_sequences
-from .get_cell_lines import get_cell_lines
 from auto_tqdm import tqdm
 
 def drop_unknown_datapoints(epigenomic_data:pd.DataFrame, nucleotides_sequences:np.ndarray, nucleotides_sequences_index:np.ndarray, classes:pd.DataFrame)->Tuple[pd.DataFrame, np.ndarray, np.ndarray, pd.DataFrame]:
@@ -16,8 +15,8 @@ def drop_unknown_datapoints(epigenomic_data:pd.DataFrame, nucleotides_sequences:
     classes = classes.drop(columns=["UK"])
     return epigenomic_data, nucleotides_sequences, nucleotides_sequences_index, classes
 
-def sanitize(target:str):
-    for cell_line in tqdm(get_cell_lines(target), desc="Sanitizing data"):
+def sanitize(target:str, settings:Dict):
+    for cell_line in tqdm(settings["cell_lines"], desc="Sanitizing data"):
         classes = load_raw_classes(target, cell_line)
         if "UK" not in classes.columns:
             continue
