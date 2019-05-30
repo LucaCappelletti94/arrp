@@ -1,6 +1,5 @@
 dataset/\.DS_Store
 
-
 \.DS_Store
 
 \.ipynb_checkpoints/
@@ -11,7 +10,7 @@ __pycache__/
 dataset/*.fa
 dataset/expanded_regions/*.fa
 *.fai
-dataset/one_hot_encoded_expanded_regions/
+dataset/one_hot_encoded_expanded_regions/*.csv
 
 dataset/one_hot_encoded_classes/
 
