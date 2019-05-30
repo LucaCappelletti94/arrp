@@ -16,6 +16,15 @@
         "test_sizes":[0.3, 0.1],
         "quantities":[1, 1]
     },
+    "cell_lines":[
+        "GM12878"
+    ],
+    "all_cell_lines":[
+        "GM12878",
+        "HelaS3",
+        "HepG2",
+        "K562"
+    ],
     "random_seed":42,
     "training":{
         "fit":{
@@ -24,7 +33,7 @@
         },
         "early_stopping":{
             "monitor":"auprc",
-            "min_delta":0.001,
+            "min_delta":0.005,
             "patience":5,
             "mode":"max",
             "verbose":0,
@@ -35,7 +44,7 @@
             "factor":0.1,
             "patience":5,
             "mode":"max",
-            "min_delta":0.005,
+            "min_delta":0.01,
             "cooldown":0,
             "min_lr":0.001,
             "verbose":0
@@ -50,7 +59,7 @@
             "random_state":42    
         },
         "early_stopping":{
-            "delta":0.001,
+            "delta":0.005,
             "n_best":10
         }
     },
@@ -63,9 +72,10 @@
             "negative": [
                 "A-P"
             ],
+            "enabled":true,
             "balancing": {
                 "umbalanced": true,
-                "balanced": true,
+                "balanced": false,
                 "full_balanced": true
             }
         },
@@ -77,6 +87,7 @@
             "negative": [
                 "I-P"
             ],
+            "enabled":false,
             "balancing": {
                 "umbalanced": true,
                 "balanced": true,
@@ -91,6 +102,7 @@
             "negative": [
                 "I-E"
             ],
+            "enabled":false,
             "balancing": {
                 "umbalanced": true,
                 "balanced": true,
@@ -105,6 +117,7 @@
             "negative": [
                 "I-P"
             ],
+            "enabled":false,
             "balancing": {
                 "umbalanced": true,
                 "balanced": true,
@@ -124,6 +137,7 @@
                 "I-X",
                 "UK"
             ],
+            "enabled":false,
             "balancing": {
                 "umbalanced": true,
                 "balanced": true,

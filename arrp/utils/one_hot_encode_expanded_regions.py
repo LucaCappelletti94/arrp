@@ -1,11 +1,10 @@
 from auto_tqdm import tqdm
 from fasta_one_hot_encoder import FastaOneHotEncoder
-from .get_cell_lines import get_cell_lines
 import os
+from typing import Dict
 
 
-def one_hot_encode_expanded_regions(target: str):
-    cell_lines = get_cell_lines(target)
+def one_hot_encode_expanded_regions(target: str, settings:Dict):
     os.makedirs(
         "{target}/one_hot_encoded_expanded_regions".format(target=target), exist_ok=True)
     encoder = FastaOneHotEncoder(
@@ -14,7 +13,7 @@ def one_hot_encode_expanded_regions(target: str):
         lower=True,
         sparse=False
     )
-    for cell_line in tqdm(cell_lines, leave=False, desc="One-hot encode nucleotides"):
+    for cell_line in tqdm(settings["cell_lines"], leave=False, desc="One-hot encode nucleotides"):
         path = "{target}/one_hot_encoded_expanded_regions/{cell_line}.csv".format(
             cell_line=cell_line,
             target=target
