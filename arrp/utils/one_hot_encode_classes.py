@@ -3,6 +3,7 @@ import os
 from auto_tqdm import tqdm
 from sklearn.preprocessing import OneHotEncoder
 from typing import Dict
+from .ungzip import ungzip
 
 
 def one_hot_encode(classes, filename):
