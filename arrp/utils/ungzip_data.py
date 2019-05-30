@@ -1,10 +1,10 @@
 from .ungzip import ungzip
-from .get_cell_lines import get_cell_lines
 import os
+from typing import Dict
 
-def ungzip_data(target: str):
+def ungzip_data(target: str, settings:Dict):
     print("Expanding data.")
-    for cell_line in get_cell_lines(target):
+    for cell_line in settings["cell_lines"]:
         path =  "{target}/epigenomic_data/{cell_line}.csv".format(
             target=target,
             cell_line=cell_line

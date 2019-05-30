@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from typing import Dict, Callable
-from .utils import load_settings, balance, get_cell_lines, load_raw_nucleotides_sequences, load_raw_classes, load_raw_epigenomic_data
+from .utils import load_settings, balance, load_raw_nucleotides_sequences, load_raw_classes, load_raw_epigenomic_data
 from holdouts_generator import random_holdouts, holdouts_generator
 
 
@@ -33,8 +33,9 @@ def balanced_holdouts_generator(target:str, cell_line:str, task:Dict, balance_mo
 
 def tasks_generator(target:str):
     settings = load_settings(target)
-    for cell_line in get_cell_lines(target):
+    for cell_line in settings["cell_lines"]:
         for task in settings["tasks"]:
-            for balance_mode, boolean in task["balancing"].items():
-                if boolean:
-                    yield (target, cell_line, task, balance_mode)
+            if task["enabled"]:
+                for balance_mode, boolean in task["balancing"].items():
+                    if boolean:
+                        yield (target, cell_line, task, balance_mode)

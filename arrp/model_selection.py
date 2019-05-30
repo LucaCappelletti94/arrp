@@ -17,18 +17,6 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 
-
-def task_filter(target: str, cell_line: str, task: Dict, balance_mode: str)->bool:
-    """Function to limit train to only some tasks of settings."""
-    return cell_line == "GM12878" and task["name"] == "Active enhancers vs active promoters" and balance_mode == "umbalanced"
-
-
-def filtered_task_generator(target: str):
-    for task in tasks_generator(target):
-        if task_filter(*task):
-            yield task
-
-
 def dict_holdout_generator(generator)->Generator:
     if generator is None:
         return None
@@ -90,7 +78,7 @@ def collect_results(path: str, holdouts: int):
 
 def model_selection(target: str, name: str, structure: Callable, space: Space):
     settings = load_settings(target)
-    for task in tqdm(list(filtered_task_generator(target)), desc="Tasks"):
+    for task in tqdm(list(tasks_generator(target)), desc="Tasks"):
         generator = dict_holdout_generator(balanced_holdouts_generator(*task))
         path = get_path(name, *task)
         for i, ((training, testing), inner_holdouts) in enumerate(generator()):

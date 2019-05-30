@@ -6,11 +6,11 @@ space = Space({
     "mlp":mlp_space,
     "cnn":cnn_space,
     "dense":{
-        "layers":[1,4],
-        "units":[16, 128],
+        "layers":[1,3],
+        "units":[8, 64],
         "activation":"relu"
     },
     "dropout":{
-        "rate":[0.1, 0.5]
+        "rate":[0.0, 0.5]
     }
 })

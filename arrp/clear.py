@@ -1,5 +1,6 @@
 import shutil
 import os
+from holdouts_generator import clear_holdouts_cache
 
 def clear(target:str):
     [
@@ -17,3 +18,4 @@ def clear(target:str):
             "{gzip_dir}/{document}".format(gzip_dir=gzip_dir, document=document)
         ) for document in os.listdir(gzip_dir) if document.endswith(".csv")
     ]
+    clear_holdouts_cache(".holdouts")
