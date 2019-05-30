@@ -2,6 +2,7 @@ from auto_tqdm import tqdm
 from fasta_one_hot_encoder import FastaOneHotEncoder
 import os
 from typing import Dict
+from .ungzip import ungzip
 
 
 def one_hot_encode_expanded_regions(target: str, settings:Dict):
@@ -19,6 +20,9 @@ def one_hot_encode_expanded_regions(target: str, settings:Dict):
             target=target
         )
         if os.path.exists(path):
+            continue
+        if os.path.exists("{path}.gz".format(path=path)):
+            ungzip("{path}.gz".format(path=path))
             continue
         expand_cell_line_path = "{target}/expanded_regions/{cell_line}.fa".format(
             cell_line=cell_line,
