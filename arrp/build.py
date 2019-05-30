@@ -5,8 +5,8 @@ def build(target:str):
     settings = load_settings(target)
     genome = settings["genome"]
     download_genome(genome, path=target)
-    ungzip_data(target)
-    expand_regions(target, genome)
-    one_hot_encode_classes(target)
-    one_hot_encode_expanded_regions(target)
-    sanitize(target)
+    ungzip_data(target, settings)
+    expand_regions(target, genome, settings)
+    one_hot_encode_classes(target, settings)
+    one_hot_encode_expanded_regions(target, settings)
+    sanitize(target, settings)

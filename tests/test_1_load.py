@@ -8,4 +8,3 @@ def test_load():
         for _, sub in balanced_holdouts_generator(*task)():
             for _, _ in sub():
                 pass
-    clear_holdouts_cache(".holdouts")
