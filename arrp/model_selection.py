@@ -53,7 +53,7 @@ def is_model_cached(path: str, best_parameters: Dict)->bool:
     return False
 
 
-def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, N:Notipy):
+def save_results(model: Model, history: Dict, best_parameters: Dict, name:str, path: str, N:Notipy):
     os.makedirs(path, exist_ok=True)
     hash_path = "{path}/hash.json".format(path=path)
     with open(hash_path, "w") as f:
@@ -67,7 +67,10 @@ def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, 
     df.to_csv("{path}/history.csv".format(path=path))
     with open("{path}/best_parameters.json".format(path=path), "w") as f:
         json.dump(best_parameters, f, indent=4)
-    N.add_report(df[["auprc", "val_auprc"]].tail(1))
+    row = df[["auprc", "val_auprc"]].tail(1)
+    row.index = [name]
+    row.index.name = "Task name"
+    N.add_report(row)
 
 
 def collect_results(path: str, holdouts: int):
@@ -105,8 +108,8 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
                         metrics=["auprc", "auroc", "accuracy", "false_negatives", "false_positives",
                                 "true_negatives", "true_positives", "precision", "recall"]
                     )
-                    history = fit(training, testing, best_model,
+                    history = fit(training, testing, best_model, 
                                 settings["training"])
-                    save_results(best_model, history, best_parameters,
+                    save_results(best_model, history, best_parameters, task["name"],
                                 "{path}/{i}".format(path=path, i=i), N)
             collect_results(path, settings["holdouts"]["quantities"][0])
