@@ -26,6 +26,9 @@ def one_hot_encode_classes(target: str, settings:Dict):
             region=region,
             target=target
         )
+        if os.path.exists("{path}.gz".format(path=path)):
+            ungzip("{path}.gz".format(path=path))
+            continue
         if not os.path.exists(path):
             classes = pd.read_csv(region_classes, header=None)
             one_hot_encode(classes[0].ravel(), path)
