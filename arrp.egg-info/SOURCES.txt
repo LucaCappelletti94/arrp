@@ -28,7 +28,6 @@ arrp/mmnn/space.py
 arrp/mmnn/structure.py
 arrp/utils/__init__.py
 arrp/utils/expand_regions.py
-arrp/utils/get_cell_lines.py
 arrp/utils/load_csv.py
 arrp/utils/load_settings.py
 arrp/utils/one_hot_encode_classes.py

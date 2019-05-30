@@ -14,7 +14,7 @@
     "genome": "hg19",
     "holdouts":{
         "test_sizes":[0.3, 0.1],
-        "quantities":[3, 5]
+        "quantities":[5, 3]
     },
     "cell_lines":[
         "GM12878"
@@ -90,8 +90,8 @@
             "enabled":false,
             "balancing": {
                 "umbalanced": true,
-                "balanced": true,
-                "full_balanced": true
+                "balanced": false,
+                "full_balanced": false
             }
         },
         {
@@ -105,8 +105,8 @@
             "enabled":false,
             "balancing": {
                 "umbalanced": true,
-                "balanced": true,
-                "full_balanced": true
+                "balanced": false,
+                "full_balanced": false
             }
         },
         {
@@ -120,8 +120,8 @@
             "enabled":false,
             "balancing": {
                 "umbalanced": true,
-                "balanced": true,
-                "full_balanced": true
+                "balanced": false,
+                "full_balanced": false
             }
         },
         {
@@ -140,7 +140,7 @@
             "enabled":false,
             "balancing": {
                 "umbalanced": true,
-                "balanced": true,
+                "balanced": false,
                 "full_balanced": false
             }
         }
