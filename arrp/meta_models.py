@@ -9,18 +9,11 @@ from gaussian_process import Space
 from typing import Callable
 from notipy_me import Notipy
 
-def notipy_wrapper(target:str, name:str, structure:Callable, space:Space, notipy:bool):
-    if notipy:
-        with Notipy("bayesian selection for {name}".format(name=name), send_start_mail=True):
-            model_selection(target, name, structure, space)
-    else:
-        model_selection(target, name, structure, space)
-        
-def mlp(target:str, notipy:bool=False):
-    notipy_wrapper(target, "mlp", mlp_structure, mlp_space, notipy)
+def mlp(target:str):
+    model_selection(target, "mlp", mlp_structure, mlp_space)
 
-def cnn(target:str, notipy:bool=False):
-    notipy_wrapper(target, "cnn", cnn_structure, cnn_space, notipy)
+def cnn(target:str):
+    model_selection(target, "cnn", cnn_structure, cnn_space)
 
-def mmnn(target:str, notipy:bool=False):
-    notipy_wrapper(target, "mmnn", mmnn_structure, mmnn_space, notipy)
+def mmnn(target:str):
+    model_selection(target, "mmnn", mmnn_structure, mmnn_space)
