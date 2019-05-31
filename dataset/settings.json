@@ -33,7 +33,7 @@
         },
         "early_stopping":{
             "monitor":"auprc",
-            "min_delta":0.005,
+            "min_delta":0.001,
             "patience":10,
             "mode":"max",
             "verbose":0,
@@ -44,7 +44,7 @@
             "factor":0.1,
             "patience":5,
             "mode":"max",
-            "min_delta":0.005,
+            "min_delta":0.001,
             "cooldown":0,
             "min_lr":0.001,
             "verbose":0
