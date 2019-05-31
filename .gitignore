@@ -25,3 +25,5 @@ test_dataset/one_hot_encoded_expanded_regions/
 test_dataset/cnn
 test_dataset/mlp
 test_dataset/mmnn
+
+\.notipy\.json

@@ -16,6 +16,7 @@ from plot_keras_history import plot_history
 import matplotlib.pyplot as plt
 import matplotlib
 from notipy_me import Notipy
+from dict_hash import sha256
 matplotlib.use('Agg')
 
 def dict_holdout_generator(generator)->Generator:
@@ -42,7 +43,7 @@ def get_path(name: str, target: str, cell_line: str, task: Dict, balance_mode: s
 
 
 def parameters_hash(best_parameters: str)->str:
-    return hash(str(best_parameters))
+    return sha256(best_parameters)
 
 
 def is_model_cached(path: str, best_parameters: Dict)->bool:
