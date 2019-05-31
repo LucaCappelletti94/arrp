@@ -30,7 +30,7 @@ def fit(training_set:Tuple, testing_set:Tuple, model:Model, training:Dict):
     ).history
 
 def average_model_score(holdouts_generator:Callable, model:Model, training:Dict, monitor:str):
-    initial_weights = model.get_weights()
+    initial_weights = np.copy(model.get_weights())
     scores = []
     for (training_set, testing_set), _ in holdouts_generator():
         scores.append(fit(training_set, testing_set, model, training)[monitor][-1])
