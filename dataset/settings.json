@@ -34,18 +34,18 @@
         "early_stopping":{
             "monitor":"auprc",
             "min_delta":0.001,
-            "patience":50,
+            "patience":15,
             "mode":"max",
             "verbose":0,
             "restore_best_weights":true
         },
         "plateau":{
             "monitor":"auprc",
-            "factor":0.1,
-            "patience":50,
+            "factor":0.9,
+            "patience":5,
             "mode":"max",
             "min_delta":0.001,
-            "cooldown":0,
+            "cooldown":5,
             "min_lr":0.001,
             "verbose":0
         }
