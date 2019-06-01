@@ -8,7 +8,7 @@ space = Space({
             "activation":"relu"
         },
         "dropout":{
-            "rate":[0, 0.5]
+            "rate":[0.0, 0.5]
         }
     },
     {
@@ -18,7 +18,7 @@ space = Space({
             "activation":"relu"
         },
         "dropout":{
-            "rate":[0, 0.5]
+            "rate":[0.0, 0.5]
         }
     },
     {
@@ -28,7 +28,7 @@ space = Space({
             "activation":"relu"
         },
         "dropout":{
-            "rate":[0, 0.5]
+            "rate":[0.0, 0.5]
         }
     }]
 })

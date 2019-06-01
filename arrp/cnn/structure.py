@@ -1,4 +1,4 @@
-from keras.layers import Dropout, Input, MaxPooling1D, Flatten, Layer
+from keras.layers import Dropout, Input, Flatten, Layer
 from typing import Dict, Tuple
 from ..layers import RectDense, PoolRectNormConv1d
 from extra_keras_utils import set_seed

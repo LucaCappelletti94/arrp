@@ -10,10 +10,6 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         balancing_max: int, maximum numbers per balancing maximum
         output: int, expected output class.
     """
-    assert isinstance(balancing_max, int)
-    assert isinstance(output, int)
-    assert isinstance(classes, (np.ndarray, pd.DataFrame))
-    assert isinstance(array, (np.ndarray, pd.DataFrame))
     output_class_mask = np.array(classes == output)
     retain_mask = np.bitwise_not(output_class_mask)
     n = np.sum(output_class_mask)
@@ -23,24 +19,25 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         mask[:datapoints_to_remove] = 0
         np.random.shuffle(mask)
         output_class_mask[np.where(output_class_mask)] = mask
-        array = array[np.logical_or(output_class_mask, retain_mask).reshape(-1)]
+        array = array[np.logical_or(
+            output_class_mask, retain_mask).reshape(-1)]
     return array
 
-def umbalanced(training:Tuple, testing:Tuple)->Tuple:
+
+def umbalanced(training: Tuple, testing: Tuple)->Tuple:
     """Leave data as they are."""
     return training, testing
 
 
-def balanced(training:Tuple, testing:Tuple, balancing_max: int)->Tuple:
+def balanced(training: Tuple, testing: Tuple, balancing_max: int)->Tuple:
     """Balance training set using given balancing maximum.
         *dataset_split:Tuple, Tuple of arrays.
         balancing_max: int, balancing maximum.
     """
-    assert isinstance(balancing_max, int)
     y_train = training[-1]
 
     new_training = []
-    
+
     for array in training:
         for output_class in [0, 1]:
             array = balance_generic(
@@ -51,15 +48,14 @@ def balanced(training:Tuple, testing:Tuple, balancing_max: int)->Tuple:
     return new_training, testing
 
 
-def full_balanced(training:Tuple, testing:Tuple, balancing_max:int, rate: Tuple[int, int])->Tuple:
+def full_balanced(training: Tuple, testing: Tuple, balancing_max: int, rate: Tuple[int, int])->Tuple:
     """Balance training set using given balancing maximum.
         *dataset_split:Tuple, Tuple of arrays.
         balancing_max: int, balancing maximum.
         rate: Tuple[int, int], rates beetween the two classes.
     """
-    assert isinstance(balancing_max, int)
-    assert isinstance(rate, tuple) and all(isinstance(v, int) for v in rate)
-    training, testing = balanced(training, testing, balancing_max=balancing_max)
+    training, testing = balanced(
+        training, testing, balancing_max=balancing_max)
     y_test = testing[-1]
     new_testing = []
 
@@ -67,11 +63,12 @@ def full_balanced(training:Tuple, testing:Tuple, balancing_max:int, rate: Tuple[
         for output_class in [0, 1]:
             opposite = 1 - output_class
             array = balance_generic(
-                array, y_test, 
+                array, y_test,
                 int(np.sum(y_test == opposite)*rate[opposite]/rate[output_class]), output_class)
         new_testing.append(array)
-            
+
     return training, testing
+
 
 balancing_callbacks = {
     "umbalanced": umbalanced,
@@ -79,7 +76,8 @@ balancing_callbacks = {
     "full_balanced": full_balanced
 }
 
-def get_balancing_kwargs(mode:str, positive_class:str, negative_class:str, settings:Dict):
+
+def get_balancing_kwargs(mode: str, positive_class: str, negative_class: str, settings: Dict):
     class_balancing = settings["class_balancing"]
     kwargs = {
         "umbalanced": {},
@@ -93,7 +91,7 @@ def get_balancing_kwargs(mode:str, positive_class:str, negative_class:str, setti
     }
     return kwargs[mode]
 
-def balance(training:Tuple, testing:Tuple, mode:str, positive_class:str, negative_class:str, settings:Dict)->Tuple:
+
+def balance(training: Tuple, testing: Tuple, mode: str, positive_class: str, negative_class: str, settings: Dict)->Tuple:
     global balancing_callbacks
     return balancing_callbacks[mode](training, testing, **get_balancing_kwargs(mode, positive_class, negative_class, settings))
-    

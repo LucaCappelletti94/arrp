@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 from notipy_me import Notipy
 from dict_hash import sha256
+from keras.utils import print_summary
 matplotlib.use('Agg')
 
 def dict_holdout_generator(generator)->Generator:
@@ -106,7 +107,8 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
                         metrics=["auprc", "auroc", "accuracy", "false_negatives", "false_positives",
                                 "true_negatives", "true_positives", "precision", "recall"]
                     )
-                    history = fit(training, testing, best_model, 
+                    print_summary(best_model)
+                    history = fit(training, testing, best_model,
                                 settings["training"])
                     save_results(best_model, history, best_parameters,
                                 "{path}/{i}".format(path=path, i=i), N)
