@@ -4,7 +4,6 @@ import  matplotlib.pyplot as plt
 from plot_keras_history import plot_history
 from typing import Callable, Dict
 from gaussian_process import GaussianProcess, Space
-from plot_keras_history import plot_keras_history
 from .model_fit import fit
 from .model import model
 import numpy as np
@@ -51,7 +50,7 @@ class ModelTuner:
     def tune(self, cache_dir:str, **kwargs)->Dict:
         self._cache_dir = cache_dir
         gp = GaussianProcess(self._score, self._space, cache_dir=cache_dir)
-        results = gp.minimize(**kwargs)
+        gp.minimize(**kwargs)
         if self._averages is not None:
             self._averages.to_csv("{path}/history.csv".format(path=self._cache_dir))
             plot_history({
