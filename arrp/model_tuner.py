@@ -1,5 +1,4 @@
 from typing import Callable, Dict
-from keras.layers import Layer
 from gaussian_process import GaussianProcess, Space
 from .model_score import average_model_score
 from .model import model
