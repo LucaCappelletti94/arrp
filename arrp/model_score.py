@@ -1,6 +1,5 @@
 from typing import Tuple, Callable, Dict
 import numpy as np
-from keras.layers import Layer
 from keras.models import Model
 from environments_utils import is_notebook
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau
@@ -28,9 +27,7 @@ def fit(training_set:Tuple, testing_set:Tuple, model:Model, training:Dict):
     ).history
 
 def average_model_score(holdouts_generator:Callable, model:Model, training:Dict, monitor:str):
-    initial_weights = np.copy(model.get_weights())
     scores = []
     for (training_set, testing_set), _ in holdouts_generator():
         scores.append(fit(training_set, testing_set, model, training)[monitor][-1])
-        model.set_weights(initial_weights)
     return -np.exp(np.mean(scores))
