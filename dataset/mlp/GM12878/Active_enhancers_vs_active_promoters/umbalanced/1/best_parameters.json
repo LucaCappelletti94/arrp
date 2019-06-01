@@ -1,0 +1,37 @@
+{
+    "dense": [
+        {
+            "dense": {
+                "layers": 3,
+                "units": 26,
+                "activation": "relu"
+            },
+            "dropout": {
+                "rate": 0
+            }
+        },
+        {
+            "dense": {
+                "layers": 1,
+                "units": 246,
+                "activation": "relu"
+            },
+            "dropout": {
+                "rate": 0
+            }
+        },
+        {
+            "dense": {
+                "layers": 1,
+                "units": 213,
+                "activation": "relu"
+            },
+            "dropout": {
+                "rate": 0
+            }
+        }
+    ],
+    "input_shape": [
+        101
+    ]
+}
