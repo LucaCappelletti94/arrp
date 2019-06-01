@@ -1,4 +1,4 @@
-from typing import Tuple, Callable, Dict
+from typing import Tuple, Dict
 from keras.models import Model
 from environments_utils import is_notebook
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau
