@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 from typing import Dict, Callable
 from .utils import load_settings, balance, load_raw_nucleotides_sequences, load_raw_classes, load_raw_epigenomic_data
 from holdouts_generator import random_holdouts, holdouts_generator

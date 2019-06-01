@@ -1,6 +1,5 @@
 from arrp import tasks_generator,balanced_holdouts_generator
 from auto_tqdm import tqdm
-from holdouts_generator import clear_holdouts_cache
 
 def test_load():
     target = "test_dataset"

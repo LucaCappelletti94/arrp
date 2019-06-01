@@ -1,4 +1,3 @@
-from keras.models import Model
 from keras.layers import Dropout, Input
 from ..layers import RectDense
 from typing import Tuple, Dict, List
