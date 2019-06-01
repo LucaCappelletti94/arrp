@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 from keras.models import Model
 import os
 import json
@@ -7,18 +9,17 @@ from .utils import load_settings
 from .load import balanced_holdouts_generator, tasks_generator
 from .mlp import space as mlp_space
 from .model import model
-from .model_score import fit
+from .model_fit import fit
 from .model_tuner import ModelTuner
 from gaussian_process import Space, TQDMGaussianProcess
 from typing import Callable, Dict, Generator
 from auto_tqdm import tqdm
 from plot_keras_history import plot_history
 import matplotlib.pyplot as plt
-import matplotlib
 from notipy_me import Notipy
 from dict_hash import sha256
 from keras.utils import print_summary
-matplotlib.use('Agg')
+
 
 def dict_holdout_generator(generator)->Generator:
     if generator is None:
