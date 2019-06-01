@@ -1,5 +1,5 @@
 from keras.layers import Dropout
-from typing import Tuple, Dict
+from typing import Dict
 from keras.layers.merge import concatenate
 from ..layers import RectDense
 from ..cnn import structure as cnn_structure

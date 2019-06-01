@@ -7,7 +7,6 @@ from .mmnn import structure as mmnn_structure
 from .model_selection import model_selection
 from gaussian_process import Space
 from typing import Callable
-from notipy_me import Notipy
 
 def mlp(target:str):
     model_selection(target, "mlp", mlp_structure, mlp_space)
