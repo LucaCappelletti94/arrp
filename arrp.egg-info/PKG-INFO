@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: arrp
-Version: 2.2.3
+Version: 2.3.0
 Summary: Simple python package to render the holdouts and training datasets of active regulatory regions for models with the task to predict them.
 Home-page: https://github.com/LucaCappelletti94/arrp
 Author: Luca Cappelletti
