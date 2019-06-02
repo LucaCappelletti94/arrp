@@ -66,6 +66,7 @@ def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, 
     model.save("{path}/model.h5".format(path=path))
     plot_history(history)
     plt.savefig("{path}/history.png".format(path=path))
+    plt.close()
     df = pd.DataFrame(history)
     df.to_csv("{path}/history.csv".format(path=path))
     with open("{path}/best_parameters.json".format(path=path), "w") as f:

@@ -36,6 +36,7 @@ class ModelTuner:
             dfh.to_csv("{path}/history.csv".format(path=path))
             plot_history(history)
             plt.savefig("{path}/history.png".format(path=path))
+            plt.close()
             scores.append(history[self._monitor][-1])
             averages = dfh.tail(1) if averages is None else pd.concat([
                 dfh.tail(1), averages
@@ -57,4 +58,5 @@ class ModelTuner:
                 m:self._averages[m].values for m in self._averages.columns
             })
             plt.savefig("{path}/history.png".format(path=self._cache_dir))
+            plt.close()
         return gp.best_parameters
