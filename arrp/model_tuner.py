@@ -9,6 +9,7 @@ from .model import model
 import numpy as np
 import pandas as pd
 import os
+import logging
 
 class ModelTuner:
     def __init__(self, structure:Callable, space:Space, holdouts:Callable, training:Dict):
@@ -20,7 +21,7 @@ class ModelTuner:
         self._averages = None
 
     @classmethod
-    def _calculate_score(cls, last_epoch:pd.DataFrame)->float:
+    def _calculate_score(cls, last_epoch:Dict)->float:
         return last_epoch["val_auprc"] * (1 - last_epoch["val_loss"]) * last_epoch["val_acc"] * last_epoch["val_auroc"]
 
     def _score(self, **structure:Dict):
@@ -41,7 +42,9 @@ class ModelTuner:
             plt.savefig("{path}/history.png".format(path=path))
             plt.close()
             tail = dfh.tail(1)
-            scores.append(self._calculate_score(tail))
+            scores.append(self._calculate_score({
+                k:tail[k].values[-1] for k in tail.columns 
+            }))
             averages = tail if averages is None else pd.concat([
                 tail, averages
             ])
@@ -49,7 +52,7 @@ class ModelTuner:
             self._averages, averages.mean().to_frame().T
         ])
         self._iteration+=1
-        return -np.exp(np.mean(scores))
+        return -np.mean(scores)
 
 
     def tune(self, cache_dir:str, **kwargs)->Dict:

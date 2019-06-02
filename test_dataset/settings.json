@@ -28,7 +28,7 @@
     "random_seed":42,
     "training":{
         "fit":{
-            "epochs":1,
+            "epochs":2,
             "batch_size":10000
         },
         "early_stopping":{
