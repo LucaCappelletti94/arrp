@@ -13,11 +13,9 @@ def model(inputs: Tuple[Layer, Layer], output: Layer, metrics:List=None)->Model:
         inputs=inputs,
         outputs=[head(output)]
     )
-    if metrics is None:
-        metrics = ["auprc"]
     model.compile(
         optimizer="nadam",
         loss="binary_crossentropy",
-        metrics=metrics
+        metrics=["auprc", "auroc", "accuracy"] if metrics is None else metrics
     )
     return model

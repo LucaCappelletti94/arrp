@@ -51,7 +51,6 @@
         }
     },
     "gaussian_process":{
-        "monitor":"val_auprc",
         "tune":{
             "acq_func":"gp_hedge",
             "n_calls":1,
