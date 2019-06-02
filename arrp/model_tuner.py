@@ -11,12 +11,11 @@ import pandas as pd
 import os
 
 class ModelTuner:
-    def __init__(self, structure:Callable, space:Space, holdouts:Callable, training:Dict, monitor:str):
+    def __init__(self, structure:Callable, space:Space, holdouts:Callable, training:Dict):
         self._structure = structure
         self._space = space
         self._holdouts = holdouts
         self._training = training
-        self._monitor = monitor
         self._iteration = 0
         self._averages = None
 
@@ -25,7 +24,7 @@ class ModelTuner:
         return last_epoch["val_auprc"] * (1 - last_epoch["val_loss"]) * last_epoch["val_acc"] * last_epoch["val_auroc"]
 
     def _score(self, **structure:Dict):
-        """Return average score for given monitor key."""
+        """Return average model score."""
         scores = []
         averages = None
         for i, ((training_set, testing_set), _) in enumerate(self._holdouts()):
