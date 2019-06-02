@@ -4,7 +4,6 @@ git:
   depth: false
 env:
   global:
-  - CC_TEST_REPORTER_ID=53eef44d00d3465aeaf806ea310cfc5497e7473d13ae05fbc753890c39712c60
   - secure: e/VBWOBCQYkQnZOI3VMQNT948QQgvv7BOalSntVGLJYv2EBln4inTGy7lPYXghu0kGpi6CUEtkVZlJmEXGEtGQG2SqDAoiVv/+WqAgFBqvtp53lPc7L2SmbAnwlwzBzbfom/VWXrnaXbNRQvq/0WAQMOIVv/ypr2gfcZRX5bwKuMtEYLUyQR+jP09DUQ+yTbZGorEjmkyXgITwZzi/b2A7HkFW45HA6WYH8BQ/y2VEaZ9yyypl2snbW2YlucnAd0XqgxMlfpuzuBehl0Ol2+cXdcFT3JDAQDd1u56WNFN6VNrkZju3L8pByCM3NQUI8p/dZHeP/v5pXeRWRayD94lH5cLZgiAReW5qqCrFMVnUssFSeg76a5RKFqAMEjJ1LH3bTBpnWR40ocHSenTjDXWBInXk+5QUbAcHI4/jkAFPqfd9Uv7kAC6w0NpTmMUH90izesQFuUOK3g0e72B+aIB2fzIzu/zfFupVVEC+qiJD20GYps3GL8ElXvrs8rRuTM/5QEE/7qMS81yK6DUkfT7WFrVuHqPrKUkHLLKTbzZFT+1YO0qAfPOu0n8s7GbqNBtUT37xQh7jbEf72k6mpQ1DQwPrEx6mh2Z9Y5Y8Q7CFjzkDLRyAMTQej6dqyWF6WDSbks/I2xKaEKk5RuWzKzzT/0rJGMlTbFzJYanj0ew2s=
   - secure: XZ0747Q3Mz5cn6m4dtLI7oWmkYKK4eFd4zm9MOuQLJj35d3YyWbf5WKmALLauxTKcJ/xQZSOjSo5Z1XjR2/kGRjee2EhcKcIr6yQ/uLcqIOp1az4xYjApLfaEykOOkE0i7oTRiRAlrKz8HsC9eiRLUX79pKEGcIDGGRFj+ffJVlrF45iczG+C/HYpg7HB8Hp17geOhgr15ayFvw1nyE+FS9wV9xR/xJ83WHc1SqQfs47iemzac87ZFaXc57l4vT2uZFcAJp1FFCCbT2r3pURjBLyBqTwX93MktrqDAptyyZXxQoRerRfIfbF8mJUAK3mqi+RFnRk6LHR1r0a/J9sBDEqk61CK9RDFO3LtmZ389+Qtmf6iLXJtlJiDO5sdAJTnslK7iBIi2EmvjhhaKtwNE/uOIxZmdodb1ss7FlV+eGbT8JmI886t5Bq10Sygvaag44dPsqSPlgi6ElarLvUKLtDa0GnApx6m933nnx+YLa0rYbw4ouIgUl0QG5gzB8Hpgp4Xb5+cJ6MJVYlkMY1AZNvYlbE1fRWNrDl0aSAf3xsNS7O2MPT/mm/0+Q1wdT7SKaiGZEyG/l6LmkIk5e1625Fbs2Deed0LeSsEbAea+Z9XHJcFVOM8qunnASAbCPQA8qLKSpXxKtfHN0AMjibC3F1GnEMUAZ7pktVVFwMfb4=
 addons:
@@ -21,8 +20,7 @@ before_install:
 install:
 - pip install .[test]
 before_script:
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-  > ./cc-test-reporter
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
 - "./cc-test-reporter before-build"
 after_script:
