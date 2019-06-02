@@ -1,3 +1,4 @@
+MANIFEST.in
 README.rst
 setup.py
 arrp/__init__.py
@@ -7,7 +8,7 @@ arrp/clear.py
 arrp/load.py
 arrp/meta_models.py
 arrp/model.py
-arrp/model_score.py
+arrp/model_fit.py
 arrp/model_selection.py
 arrp/model_tuner.py
 arrp.egg-info/PKG-INFO
