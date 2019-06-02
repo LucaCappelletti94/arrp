@@ -1,0 +1,40 @@
+{
+    "parameters": {
+        "dense": [
+            {
+                "dense": {
+                    "activation": "relu",
+                    "layers": 3,
+                    "units": 216
+                },
+                "dropout": {
+                    "rate": 0.011449870448408447
+                }
+            },
+            {
+                "dense": {
+                    "activation": "relu",
+                    "layers": 4,
+                    "units": 35
+                },
+                "dropout": {
+                    "rate": 0.37049784704258726
+                }
+            },
+            {
+                "dense": {
+                    "activation": "relu",
+                    "layers": 1,
+                    "units": 242
+                },
+                "dropout": {
+                    "rate": 0.0209630976353964
+                }
+            }
+        ],
+        "input_shape": [
+            101
+        ]
+    },
+    "score": -1.0711976780737287
+}
