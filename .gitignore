@@ -1,29 +1,44 @@
-dataset/\.DS_Store
+test_dataset/one_hot_encoded_classes/
 
-\.DS_Store
-
-\.ipynb_checkpoints/
-
-__pycache__/
-
-\.vscode/
-dataset/*.fa
 dataset/expanded_regions/*.fa
-*.fai
-dataset/one_hot_encoded_expanded_regions/*.csv
 
 dataset/one_hot_encoded_classes/*.csv
 
+dataset/*.fa
+
+\.notipy\.json
+
+__pycache__/
+
+test_dataset/one_hot_encoded_expanded_regions/
+
+dataset/one_hot_encoded_expanded_regions/*.csv
+
+\.DS_Store
+
+dataset/\.DS_Store
+
+.notipy.json
+
+
+\.vscode/
+
+*/__pycache__/*
+
+**/__pycache__/*
+
 */epigenomic_data/*.csv
+
+.holdouts
+
+test_dataset/cnn
 
 test_dataset/cell_lines/
 
-test_dataset/one_hot_encoded_classes/
+*.fai
 
-test_dataset/one_hot_encoded_expanded_regions/
-.holdouts
-test_dataset/cnn
-test_dataset/mlp
+\.ipynb_checkpoints/
+
 test_dataset/mmnn
 
-\.notipy\.json
+test_dataset/mlp
