@@ -7,10 +7,10 @@ space = Space({
     "cnn":cnn_space,
     "dense":{
         "layers":[1,3],
-        "units":[8, 64],
+        "units":(8,16,32,64),
         "activation":"relu"
     },
     "dropout":{
-        "rate":[0.0, 0.5]
+        "rate":(0.0, 0.1, 0.3, 0.5)
     }
 })

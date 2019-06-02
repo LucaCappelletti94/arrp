@@ -20,6 +20,10 @@ class ModelTuner:
         self._iteration = 0
         self._averages = None
 
+    @classmethod
+    def _calculate_score(cls, last_epoch:pd.DataFrame)->float:
+        return last_epoch["val_auprc"] * (1 - last_epoch["val_loss"]) * last_epoch["val_acc"] * last_epoch["val_auroc"]
+
     def _score(self, **structure:Dict):
         """Return average score for given monitor key."""
         scores = []
@@ -37,9 +41,10 @@ class ModelTuner:
             plot_history(history)
             plt.savefig("{path}/history.png".format(path=path))
             plt.close()
-            scores.append(history[self._monitor][-1])
-            averages = dfh.tail(1) if averages is None else pd.concat([
-                dfh.tail(1), averages
+            tail = dfh.tail(1)
+            scores.append(self._calculate_score(tail))
+            averages = tail if averages is None else pd.concat([
+                tail, averages
             ])
         self._averages = averages.mean().to_frame().T if self._averages is None else pd.concat([
             self._averages, averages.mean().to_frame().T
