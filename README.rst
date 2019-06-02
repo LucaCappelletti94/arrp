@@ -18,7 +18,65 @@ Since some software handling coverages sometime get slightly different results, 
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
-AFTER
+How do I get started?
+----------------------------------------------
+If you don't have it already, you will need to install the package bedtools_. A setup for both Linux and macOS can be found here_. 
+
+Most commonly you just need to run the following:
+
+.. code:: shell
+
+    sudo apt install bedtools
+    pip install arrp
+
+How do I build the dataset?
+---------------------------------------
+From within the repo run:
+
+.. code:: python
+
+    from arrp import build
+    build(target="dataset")
+
+Where `"dataset"` is the path to your dataset. The default one is the one in the repository.
+
+Which genome does it use?
+----------------------------------------
+By default it uses hg19_, as it is the genome used in the labeled data currently available from the Wasserman team. This is one of the numerous settings available.
+
+Running the code
+----------------------------
+Once you have rendered the dataset you can run the following snippets:
+
+CNN
+----------
+
+.. code:: python
+   
+   from arrp_NNs import cnn
+   cnn(target="dataset")
+  
+MLP
+----------
+
+.. code:: python
+   
+   from arrp_NNs import mlp
+   mlp(target="dataset")
+   
+Multi-modal neural network
+------------------------------
+
+.. code:: python
+   
+   from arrp_NNs import mmnn
+   mmnn(target="dataset")
+
+
+
+.. _hg19: https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.13/
+.. _bedtools: https://bedtools.readthedocs.io/en/latest/
+.. _here: https://github.com/LucaCappelletti94/wasserman/blob/master/info/bedtools.md
 
 .. |travis| image:: https://travis-ci.org/LucaCappelletti94/arrp.png
    :target: https://travis-ci.org/LucaCappelletti94/arrp
