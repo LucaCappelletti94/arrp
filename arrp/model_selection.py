@@ -91,7 +91,7 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
             path = get_path(name, *task)
             for i, ((training, testing), inner_holdouts) in enumerate(generator()):
                 mlp_space["input_shape"] = (training[0]["mlp"].shape[1],)
-                tuner = ModelTuner(structure, space, inner_holdouts, settings["training"])
+                tuner = ModelTuner(structure, space, inner_holdouts, settings["gaussian_process"]["training"])
                 best_parameters = tuner.tune(
                     cache_dir="{path}/{i}/.gaussian_cache".format(path=path, i=i),
                     callback=[
