@@ -54,12 +54,15 @@ class ModelTuner:
         self._averages = new_average if self._averages is None else pd.concat([
             self._averages, new_average
         ])
-        self._iteration += 1
         return -np.mean(scores)
+
+    def _iteration_callback(self, *args):
+        self._iteration += 1
 
     def tune(self, cache_dir: str, **kwargs) -> Dict:
         self._cache_dir = cache_dir
         gp = GaussianProcess(self._score, self._space, cache_dir=cache_dir)
+        kwargs["callback"].append(self._iteration_callback)
         gp.minimize(**kwargs)
         if self._averages is not None:
             self._averages.index.name = "Gaussian process step"
