@@ -33,19 +33,19 @@
         },
         "early_stopping":{
             "monitor":"auprc",
-            "min_delta":0.005,
-            "patience":5,
+            "min_delta":0.001,
+            "patience":20,
             "mode":"max",
             "verbose":0,
             "restore_best_weights":true
         },
         "plateau":{
             "monitor":"auprc",
-            "factor":0.1,
+            "factor":0.9,
             "patience":5,
             "mode":"max",
-            "min_delta":0.01,
-            "cooldown":0,
+            "min_delta":0.001,
+            "cooldown":5,
             "min_lr":0.001,
             "verbose":0
         }
@@ -53,13 +53,37 @@
     "gaussian_process":{
         "tune":{
             "acq_func":"gp_hedge",
-            "n_calls":1,
-            "n_random_starts":1,
+            "n_calls":2,
+            "n_random_starts":2,
             "random_state":42    
         },
         "early_stopping":{
             "delta":0.005,
             "n_best":10
+        },
+        "training":{
+            "fit":{
+                "epochs":2,
+                "batch_size":10000
+            },
+            "early_stopping":{
+                "monitor":"val_loss",
+                "min_delta":0.005,
+                "patience":5,
+                "mode":"max",
+                "verbose":0,
+                "restore_best_weights":true
+            },
+            "plateau":{
+                "monitor":"auprc",
+                "factor":0.9,
+                "patience":5,
+                "mode":"max",
+                "min_delta":0.001,
+                "cooldown":5,
+                "min_lr":0.001,
+                "verbose":0
+            }
         }
     },
     "tasks": [

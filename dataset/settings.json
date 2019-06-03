@@ -28,13 +28,13 @@
     "random_seed":42,
     "training":{
         "fit":{
-            "epochs":500,
+            "epochs":1000,
             "batch_size":1000
         },
         "early_stopping":{
             "monitor":"auprc",
             "min_delta":0.001,
-            "patience":15,
+            "patience":20,
             "mode":"max",
             "verbose":0,
             "restore_best_weights":true
@@ -60,6 +60,30 @@
         "early_stopping":{
             "delta":0.005,
             "n_best":10
+        },
+        "training":{
+            "fit":{
+                "epochs":300,
+                "batch_size":1000
+            },
+            "early_stopping":{
+                "monitor":"val_loss",
+                "min_delta":0.005,
+                "patience":5,
+                "mode":"max",
+                "verbose":0,
+                "restore_best_weights":true
+            },
+            "plateau":{
+                "monitor":"auprc",
+                "factor":0.9,
+                "patience":5,
+                "mode":"max",
+                "min_delta":0.001,
+                "cooldown":5,
+                "min_lr":0.001,
+                "verbose":0
+            }
         }
     },
     "tasks": [
