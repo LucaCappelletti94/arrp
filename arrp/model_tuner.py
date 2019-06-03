@@ -49,8 +49,10 @@ class ModelTuner:
             averages = tail if averages is None else pd.concat([
                 tail, averages
             ])
-        self._averages = averages.mean().to_frame().T if self._averages is None else pd.concat([
-            self._averages, averages.mean().to_frame().T
+        new_average = averages.mean().to_frame().T
+        new_average.index = [self._iteration]
+        self._averages = new_average if self._averages is None else pd.concat([
+            self._averages, new_average
         ])
         self._iteration += 1
         return -np.mean(scores)
@@ -60,11 +62,10 @@ class ModelTuner:
         gp = GaussianProcess(self._score, self._space, cache_dir=cache_dir)
         gp.minimize(**kwargs)
         if self._averages is not None:
+            self._averages.index.name = "Gaussian process step"
             self._averages.to_csv(
                 "{path}/history.csv".format(path=self._cache_dir))
-            plot_history({
-                m: self._averages[m].values for m in self._averages.columns
-            })
+            plot_history(self._averages)
             plt.savefig("{path}/history.png".format(path=self._cache_dir))
             plt.close()
         return gp.best_parameters
