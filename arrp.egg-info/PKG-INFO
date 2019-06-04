@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: arrp
-Version: 2.3.3
+Version: 2.3.4
 Summary: Simple python package to render the holdouts and training datasets of active regulatory regions for models with the task to predict them.
 Home-page: https://github.com/LucaCappelletti94/arrp
 Author: Luca Cappelletti
@@ -28,7 +28,7 @@ Description: arrp
         
         How do I get started?
         ----------------------------------------------
-        If you don't have it already, you will need to install the package bedtools_. A setup for both Linux and macOS can be found here_. 
+        If you don't have it already, you will need to install the package bedtools_. 
         
         Most commonly you just need to run the following:
         
@@ -125,6 +125,7 @@ Description: arrp
         .. |code_climate_coverage| image:: https://api.codeclimate.com/v1/badges/a6be31e68bbb41d7de5a/test_coverage
             :target: https://codeclimate.com/github/LucaCappelletti94/arrp/test_coverage
             :alt: Code Climate Coverate
+        
 Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
 Classifier: License :: OSI Approved :: MIT License
