@@ -1,6 +1,6 @@
 import shutil
 import os
-from holdouts_generator import clear_holdouts_cache
+from holdouts_generator import clear_cache, clear_memory_cache
 
 
 def clear(target: str):
@@ -22,4 +22,5 @@ def clear(target: str):
                                                document=document)
             )
 
-    clear_holdouts_cache(".holdouts")
+    clear_cache(".holdouts")
+    clear_memory_cache()
