@@ -17,7 +17,7 @@
         "quantities":[5, 5]
     },
     "cell_lines":[
-        "GM12878"
+        "K562"
     ],
     "all_cell_lines":[
         "GM12878",
