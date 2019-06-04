@@ -20,7 +20,7 @@ Since some software handling coverages sometime get slightly different results, 
 
 How do I get started?
 ----------------------------------------------
-If you don't have it already, you will need to install the package bedtools_. A setup for both Linux and macOS can be found here_. 
+If you don't have it already, you will need to install the package bedtools_. 
 
 Most commonly you just need to run the following:
 
