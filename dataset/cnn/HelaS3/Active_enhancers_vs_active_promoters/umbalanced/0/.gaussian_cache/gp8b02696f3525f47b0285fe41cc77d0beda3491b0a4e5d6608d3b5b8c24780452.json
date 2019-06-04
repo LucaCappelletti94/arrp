@@ -1,0 +1,45 @@
+{
+    "parameters": {
+        "convolutionals": [
+            {
+                "Conv1D_kwargs": {
+                    "activation": "relu",
+                    "filters": 32,
+                    "kernel_size": 5
+                },
+                "MaxPooling1D_kwargs": {
+                    "pool_size": [
+                        2
+                    ]
+                },
+                "layers": 2
+            },
+            {
+                "Conv1D_kwargs": {
+                    "activation": "relu",
+                    "filters": 64,
+                    "kernel_size": 3
+                },
+                "MaxPooling1D_kwargs": {
+                    "pool_size": [
+                        2
+                    ]
+                },
+                "layers": 2
+            }
+        ],
+        "dense": [
+            {
+                "activation": "relu",
+                "layers": 2,
+                "units": 32
+            },
+            {
+                "activation": "relu",
+                "layers": 2,
+                "units": 16
+            }
+        ]
+    },
+    "score": -0.2966371376888567
+}
