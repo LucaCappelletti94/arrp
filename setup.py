@@ -84,6 +84,7 @@ setup(
     tests_require=test_deps,
     install_requires=[
         'notipy_me',
+        'dict_hash',
         'gaussian_process',
         'fasta_one_hot_encoder',
         'pandas',

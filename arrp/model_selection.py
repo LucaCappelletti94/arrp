@@ -7,6 +7,7 @@ import pandas as pd
 from skopt.callbacks import DeltaYStopper
 from .utils import load_settings
 from .load import balanced_holdouts_generator, tasks_generator
+from holdouts_generator import clear_memory_cache
 from .mlp import space as mlp_space
 from .model import model
 from .model_fit import fit
@@ -19,6 +20,7 @@ import matplotlib.pyplot as plt
 from notipy_me import Notipy
 from dict_hash import sha256
 from keras.utils import print_summary
+from keras.backend import clear_session
 
 
 def dict_holdout_generator(generator)->Generator:
@@ -89,6 +91,8 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
         for task in tqdm(list(tasks_generator(target)), desc="Tasks"):
             generator = dict_holdout_generator(balanced_holdouts_generator(*task))
             path = get_path(name, *task)
+            clear_memory_cache()
+            clear_session()
             for i, ((training, testing), inner_holdouts) in enumerate(generator()):
                 mlp_space["input_shape"] = (training[0]["mlp"].shape[1],)
                 tuner = ModelTuner(structure, space, inner_holdouts, settings["gaussian_process"]["training"])
