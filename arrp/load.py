@@ -22,7 +22,7 @@ def balanced_holdouts_generator(target:str, cell_line:str, task:Dict, balance_mo
         epigenomic_data, nucleotides_sequences, classes,
         holdouts=random_holdouts(**settings["holdouts"]),
         cache=True,
-        memory_cache=True,
+        memory_cache=False,
         cache_dir=".holdouts/{target}/{cell_line}/{name}".format(
             target=target,
             cell_line=cell_line,
