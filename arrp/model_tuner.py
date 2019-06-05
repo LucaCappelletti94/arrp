@@ -6,6 +6,7 @@ from .model_fit import fit
 from gaussian_process import GaussianProcess, Space
 from typing import Callable, Dict
 from keras.backend import clear_session
+import gc
 
 class ModelTuner:
     def __init__(self, structure: Callable, space: Space, holdouts: Callable, training: Dict):
@@ -29,6 +30,7 @@ class ModelTuner:
                 k: v[-1] for k, v in fit(training_set, testing_set, compiled_model, self._training).items()
             }))
         clear_session()
+        gc.collect()
         return -np.mean(scores)
 
     def tune(self, cache_dir: str, **kwargs) -> Dict:
