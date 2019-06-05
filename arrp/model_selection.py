@@ -19,8 +19,8 @@ from plot_keras_history import plot_history
 import matplotlib.pyplot as plt
 from notipy_me import Notipy
 from dict_hash import sha256
-from keras.utils import print_summary
 from keras.backend import clear_session
+import gc
 
 
 def dict_holdout_generator(generator)->Generator:
@@ -58,7 +58,7 @@ def is_model_cached(path: str, best_parameters: Dict)->bool:
     return False
 
 
-def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, N:Notipy):
+def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, notifier:Notipy):
     os.makedirs(path, exist_ok=True)
     hash_path = "{path}/hash.json".format(path=path)
     with open(hash_path, "w") as f:
@@ -73,7 +73,7 @@ def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, 
     df.to_csv("{path}/history.csv".format(path=path))
     with open("{path}/best_parameters.json".format(path=path), "w") as f:
         json.dump(best_parameters, f, indent=4)
-    N.add_report(df[["auprc", "val_auprc"]].tail(1))
+    notifier.add_report(df[["auprc", "val_auprc"]].tail(1))
 
 
 def collect_results(path: str, holdouts: int):
@@ -86,13 +86,11 @@ def collect_results(path: str, holdouts: int):
 
 
 def model_selection(target: str, name: str, structure: Callable, space: Space):
-    with Notipy() as N:
+    with Notipy() as notifier:
         settings = load_settings(target)
         for task in tqdm(list(tasks_generator(target)), desc="Tasks"):
             generator = dict_holdout_generator(balanced_holdouts_generator(*task))
             path = get_path(name, *task)
-            clear_memory_cache()
-            clear_session()
             for i, ((training, testing), inner_holdouts) in enumerate(generator()):
                 mlp_space["input_shape"] = (training[0]["mlp"].shape[1],)
                 tuner = ModelTuner(structure, space, inner_holdouts, settings["gaussian_process"]["training"])
@@ -112,9 +110,11 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
                         metrics=["auprc", "auroc", "accuracy", "false_negatives", "false_positives",
                                 "true_negatives", "true_positives", "precision", "recall"]
                     )
-                    print_summary(best_model)
                     history = fit(training, testing, best_model,
                                 settings["training"])
                     save_results(best_model, history, best_parameters,
-                                "{path}/{i}".format(path=path, i=i), N)
+                                "{path}/{i}".format(path=path, i=i), notifier)
+                gc.collect()
             collect_results(path, settings["holdouts"]["quantities"][0])
+            clear_session()
+            
