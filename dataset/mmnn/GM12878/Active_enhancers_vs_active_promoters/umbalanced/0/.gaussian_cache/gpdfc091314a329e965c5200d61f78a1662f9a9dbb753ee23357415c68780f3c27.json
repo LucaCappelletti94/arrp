@@ -1,0 +1,92 @@
+{
+    "parameters": {
+        "cnn": {
+            "convolutionals": [
+                {
+                    "Conv1D_kwargs": {
+                        "activation": "relu",
+                        "filters": 16,
+                        "kernel_size": 10
+                    },
+                    "MaxPooling1D_kwargs": {
+                        "pool_size": [
+                            2
+                        ]
+                    },
+                    "layers": 3
+                },
+                {
+                    "Conv1D_kwargs": {
+                        "activation": "relu",
+                        "filters": 16,
+                        "kernel_size": 8
+                    },
+                    "MaxPooling1D_kwargs": {
+                        "pool_size": [
+                            2
+                        ]
+                    },
+                    "layers": 1
+                }
+            ],
+            "dense": [
+                {
+                    "activation": "relu",
+                    "layers": 2,
+                    "units": 32
+                },
+                {
+                    "activation": "relu",
+                    "layers": 2,
+                    "units": 16
+                }
+            ]
+        },
+        "dense": {
+            "activation": "relu",
+            "layers": 1,
+            "units": 32
+        },
+        "dropout": {
+            "rate": 0.1
+        },
+        "mlp": {
+            "dense": [
+                {
+                    "dense": {
+                        "activation": "relu",
+                        "layers": 3,
+                        "units": 64
+                    },
+                    "dropout": {
+                        "rate": 0.3
+                    }
+                },
+                {
+                    "dense": {
+                        "activation": "relu",
+                        "layers": 4,
+                        "units": 256
+                    },
+                    "dropout": {
+                        "rate": 0.0
+                    }
+                },
+                {
+                    "dense": {
+                        "activation": "relu",
+                        "layers": 4,
+                        "units": 32
+                    },
+                    "dropout": {
+                        "rate": 0.1
+                    }
+                }
+            ],
+            "input_shape": [
+                101
+            ]
+        }
+    },
+    "score": -0.03560495741409012
+}
