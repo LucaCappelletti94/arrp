@@ -10,7 +10,8 @@
             "Active enhancers vs active promoters"
         ],
         "balancing":[
-            "umbalanced"
+            "umbalanced",
+            "full_balanced"
         ]
     },
     "souris":{
@@ -22,7 +23,8 @@
             "Active enhancers vs active promoters"
         ],
         "balancing":[
-            "umbalanced"
+            "umbalanced",
+            "full_balanced"
         ]
     },
     "verdi":{
@@ -33,7 +35,8 @@
             "Active enhancers vs active promoters"
         ],
         "balancing":[
-            "umbalanced"
+            "umbalanced",
+            "full_balanced"
         ]
     },
     "dhcp-150":{
@@ -44,7 +47,8 @@
             "Active enhancers vs active promoters"
         ],
         "balancing":[
-            "umbalanced"
+            "umbalanced",
+            "full_balanced"
         ]
     }
 }

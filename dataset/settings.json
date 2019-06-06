@@ -76,7 +76,7 @@
             "balancing": {
                 "umbalanced": true,
                 "balanced": false,
-                "full_balanced": false
+                "full_balanced": true
             }
         },
         {
@@ -91,7 +91,7 @@
             "balancing": {
                 "umbalanced": true,
                 "balanced": false,
-                "full_balanced": false
+                "full_balanced": true
             }
         },
         {
@@ -106,7 +106,7 @@
             "balancing": {
                 "umbalanced": true,
                 "balanced": false,
-                "full_balanced": false
+                "full_balanced": true
             }
         },
         {
@@ -121,7 +121,7 @@
             "balancing": {
                 "umbalanced": true,
                 "balanced": false,
-                "full_balanced": false
+                "full_balanced": true
             }
         },
         {
