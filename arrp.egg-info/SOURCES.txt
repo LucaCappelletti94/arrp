@@ -30,6 +30,7 @@ arrp/mmnn/structure.py
 arrp/utils/__init__.py
 arrp/utils/expand_regions.py
 arrp/utils/load_csv.py
+arrp/utils/load_hostnames.py
 arrp/utils/load_settings.py
 arrp/utils/one_hot_encode_classes.py
 arrp/utils/one_hot_encode_expanded_regions.py

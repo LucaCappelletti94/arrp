@@ -19,8 +19,7 @@ def fit(training_set:Tuple, testing_set:Tuple, model:Model, training:Dict):
         validation_data=testing_set,
         callbacks=[
             ktqdm(),
-            EarlyStopping(**training["early_stopping"]),
-            ReduceLROnPlateau(**training["plateau"])
+            EarlyStopping(**training["early_stopping"])
         ],
         **training["fit"]
     ).history

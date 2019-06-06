@@ -1,26 +1,26 @@
+import gc
+from keras.backend import clear_session
+from dict_hash import sha256
+from notipy_me import Notipy
+import matplotlib.pyplot as plt
+from plot_keras_history import plot_history
+from auto_tqdm import tqdm
+from typing import Callable, Dict, Generator
+from gaussian_process import Space, TQDMGaussianProcess
+from .model_tuner import ModelTuner
+from .model_fit import fit
+from .model import model
+from .mlp import space as mlp_space
+from holdouts_generator import clear_memory_cache
+from .load import balanced_holdouts_generator, tasks_generator
+from .utils import load_settings
+from skopt.callbacks import DeltaYStopper
+import pandas as pd
+import json
+import os
+from keras.models import Model
 import matplotlib
 matplotlib.use('Agg')
-from keras.models import Model
-import os
-import json
-import pandas as pd
-from skopt.callbacks import DeltaYStopper
-from .utils import load_settings
-from .load import balanced_holdouts_generator, tasks_generator
-from holdouts_generator import clear_memory_cache
-from .mlp import space as mlp_space
-from .model import model
-from .model_fit import fit
-from .model_tuner import ModelTuner
-from gaussian_process import Space, TQDMGaussianProcess
-from typing import Callable, Dict, Generator
-from auto_tqdm import tqdm
-from plot_keras_history import plot_history
-import matplotlib.pyplot as plt
-from notipy_me import Notipy
-from dict_hash import sha256
-from keras.backend import clear_session
-import gc
 
 
 def dict_holdout_generator(generator)->Generator:
@@ -58,7 +58,7 @@ def is_model_cached(path: str, best_parameters: Dict)->bool:
     return False
 
 
-def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, notifier:Notipy):
+def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, notifier: Notipy):
     os.makedirs(path, exist_ok=True)
     hash_path = "{path}/hash.json".format(path=path)
     with open(hash_path, "w") as f:
@@ -89,13 +89,23 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
     with Notipy() as notifier:
         settings = load_settings(target)
         for task in tqdm(list(tasks_generator(target)), desc="Tasks"):
-            generator = dict_holdout_generator(balanced_holdouts_generator(*task))
+            generator = dict_holdout_generator(
+                balanced_holdouts_generator(*task))
             path = get_path(name, *task)
             for i, ((training, testing), inner_holdouts) in enumerate(generator()):
                 mlp_space["input_shape"] = (training[0]["mlp"].shape[1],)
-                tuner = ModelTuner(structure, space, inner_holdouts, settings["gaussian_process"]["training"])
+                model_space = Space({
+                    "structure": space,
+                    "training": settings["gaussian_process"]["training"],
+                    "data_hash": {
+                        "training": sha256(training),
+                        "testing": sha256(testing)
+                    }
+                })
+                tuner = ModelTuner(structure, model_space, inner_holdouts)
                 best_parameters = tuner.tune(
-                    cache_dir="{path}/{i}/.gaussian_cache".format(path=path, i=i),
+                    cache_dir="{path}/{i}/.gaussian_cache".format(
+                        path=path, i=i),
                     callback=[
                         TQDMGaussianProcess(
                             n_calls=settings["gaussian_process"]["tune"]["n_calls"]),
@@ -104,17 +114,16 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
                     ],
                     **settings["gaussian_process"]["tune"]
                 )
+                best_parameters["training"] = settings["training"]
                 if not is_model_cached("{path}/{i}".format(path=path, i=i), best_parameters):
                     best_model = model(
-                        *structure(**best_parameters),
+                        *structure(**best_parameters["structure"]),
                         metrics=["auprc", "auroc", "accuracy", "false_negatives", "false_positives",
-                                "true_negatives", "true_positives", "precision", "recall"]
+                                 "true_negatives", "true_positives", "precision", "recall"]
                     )
-                    history = fit(training, testing, best_model,
-                                settings["training"])
+                    history = fit(training, testing, best_model, settings["training"])
                     save_results(best_model, history, best_parameters,
-                                "{path}/{i}".format(path=path, i=i), notifier)
+                                 "{path}/{i}".format(path=path, i=i), notifier)
                 gc.collect()
             collect_results(path, settings["holdouts"]["quantities"][0])
             clear_session()
-            

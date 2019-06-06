@@ -1,0 +1,50 @@
+{
+    "ratadeagua":{
+        "cell_lines":[
+            "GM12878",
+            "HelaS3",
+            "HepG2",
+            "K562"
+        ],
+        "tasks":[
+            "Active enhancers vs active promoters"
+        ],
+        "balancing":[
+            "umbalanced"
+        ]
+    },
+    "souris":{
+        "cell_lines":[
+            "GM12878",
+            "HelaS3"
+        ],
+        "tasks":[
+            "Active enhancers vs active promoters"
+        ],
+        "balancing":[
+            "umbalanced"
+        ]
+    },
+    "verdi":{
+        "cell_lines":[
+            "HepG2"
+        ],
+        "tasks":[
+            "Active enhancers vs active promoters"
+        ],
+        "balancing":[
+            "umbalanced"
+        ]
+    },
+    "dhcp-150":{
+        "cell_lines":[
+            "K562"
+        ],
+        "tasks":[
+            "Active enhancers vs active promoters"
+        ],
+        "balancing":[
+            "umbalanced"
+        ]
+    }
+}

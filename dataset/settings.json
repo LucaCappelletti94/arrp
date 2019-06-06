@@ -14,13 +14,10 @@
     "genome": "hg19",
     "holdouts":{
         "test_sizes":[0.3, 0.1],
-        "quantities":[5, 5]
+        "quantities":[10, 10]
     },
     "cell_lines":[
-	"HepG2"
-    ],
-    "all_cell_lines":[
-        "GM12878",
+    	"GM12878",
         "HelaS3",
         "HepG2",
         "K562"
@@ -38,51 +35,31 @@
             "mode":"max",
             "verbose":0,
             "restore_best_weights":true
-        },
-        "plateau":{
-            "monitor":"auprc",
-            "factor":0.9,
-            "patience":5,
-            "mode":"max",
-            "min_delta":0.001,
-            "cooldown":5,
-            "min_lr":0.001,
-            "verbose":0
         }
     },
     "gaussian_process":{
         "tune":{
             "acq_func":"gp_hedge",
-            "n_calls":50,
-            "n_random_starts":5,
+            "n_calls":100,
+            "n_random_starts":10,
             "random_state":42    
         },
         "early_stopping":{
-            "delta":0.005,
+            "delta":0.001,
             "n_best":10
         },
         "training":{
             "fit":{
-                "epochs":300,
+                "epochs":1000,
                 "batch_size":1000
             },
             "early_stopping":{
                 "monitor":"val_loss",
-                "min_delta":0.005,
-                "patience":5,
+                "min_delta":0.001,
+                "patience":10,
                 "mode":"max",
                 "verbose":0,
                 "restore_best_weights":true
-            },
-            "plateau":{
-                "monitor":"auprc",
-                "factor":0.9,
-                "patience":5,
-                "mode":"max",
-                "min_delta":0.001,
-                "cooldown":5,
-                "min_lr":0.001,
-                "verbose":0
             }
         }
     },

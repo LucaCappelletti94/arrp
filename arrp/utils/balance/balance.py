@@ -2,7 +2,7 @@ import numpy as np
 from typing import Tuple, Dict
 
 
-def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, output: int)->Tuple:
+def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, output: int, random_state:int=42)->Tuple:
     """Balance given arrays using given max and expected output class.
         arrays: np.ndarray, array to balance
         classes: np.ndarray, output classes
@@ -16,6 +16,7 @@ def balance_generic(array: np.ndarray, classes: np.ndarray, balancing_max: int, 
         datapoints_to_remove = n - balancing_max
         mask = np.ones(shape=n)
         mask[:datapoints_to_remove] = 0
+        np.random.seed(random_state)
         np.random.shuffle(mask)
         output_class_mask[np.where(output_class_mask)] = mask
         array = array[np.logical_or(
