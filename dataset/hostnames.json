@@ -1,10 +1,7 @@
 {
     "ratadeagua":{
         "cell_lines":[
-            "GM12878",
-            "HelaS3",
-            "HepG2",
-            "K562"
+            "GM12878"
         ],
         "tasks":[
             "Active enhancers vs active promoters"
@@ -16,7 +13,6 @@
     },
     "souris":{
         "cell_lines":[
-            "GM12878",
             "HelaS3"
         ],
         "tasks":[
