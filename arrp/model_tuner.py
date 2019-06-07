@@ -17,7 +17,7 @@ class ModelTuner:
 
     @classmethod
     def _calculate_score(cls, last_epoch: Dict) -> float:
-        return last_epoch["val_auprc"] * (1 - last_epoch["val_loss"]) * last_epoch["val_acc"] * last_epoch["val_auroc"]
+        return last_epoch["val_auprc"] * last_epoch["val_auroc"] / last_epoch["val_loss"]
 
     def _score(self, structure: Dict, training:Dict, data_hash:Dict)->float:
         """Return average model score."""
