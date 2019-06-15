@@ -3,11 +3,11 @@
         "convolutionals": [
             {
                 "Conv1D_kwargs": {
-                    "filters": 128,
-                    "kernel_size": 10,
+                    "filters": 32,
+                    "kernel_size": 8,
                     "activation": "relu"
                 },
-                "layers": 2,
+                "layers": 1,
                 "MaxPooling1D_kwargs": {
                     "pool_size": [
                         2
@@ -17,10 +17,10 @@
             {
                 "Conv1D_kwargs": {
                     "filters": 128,
-                    "kernel_size": 8,
+                    "kernel_size": 16,
                     "activation": "relu"
                 },
-                "layers": 3,
+                "layers": 2,
                 "MaxPooling1D_kwargs": {
                     "pool_size": [
                         2

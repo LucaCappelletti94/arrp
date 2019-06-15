@@ -4,7 +4,7 @@
             {
                 "Conv1D_kwargs": {
                     "filters": 64,
-                    "kernel_size": 5,
+                    "kernel_size": 8,
                     "activation": "relu"
                 },
                 "layers": 1,
