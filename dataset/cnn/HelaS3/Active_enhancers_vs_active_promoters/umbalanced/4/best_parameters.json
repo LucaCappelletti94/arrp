@@ -3,7 +3,7 @@
         "convolutionals": [
             {
                 "Conv1D_kwargs": {
-                    "filters": 64,
+                    "filters": 32,
                     "kernel_size": 5,
                     "activation": "relu"
                 },
