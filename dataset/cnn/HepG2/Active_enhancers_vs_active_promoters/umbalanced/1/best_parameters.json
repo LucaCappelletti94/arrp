@@ -1,0 +1,62 @@
+{
+    "structure": {
+        "convolutionals": [
+            {
+                "Conv1D_kwargs": {
+                    "filters": 64,
+                    "kernel_size": 5,
+                    "activation": "relu"
+                },
+                "layers": 1,
+                "MaxPooling1D_kwargs": {
+                    "pool_size": [
+                        2
+                    ]
+                }
+            },
+            {
+                "Conv1D_kwargs": {
+                    "filters": 128,
+                    "kernel_size": 16,
+                    "activation": "relu"
+                },
+                "layers": 1,
+                "MaxPooling1D_kwargs": {
+                    "pool_size": [
+                        2
+                    ]
+                }
+            }
+        ],
+        "dense": [
+            {
+                "layers": 2,
+                "units": 32,
+                "activation": "relu"
+            },
+            {
+                "layers": 2,
+                "units": 16,
+                "activation": "relu"
+            }
+        ]
+    },
+    "training": {
+        "fit": {
+            "epochs": 500,
+            "batch_size": 1000
+        },
+        "early_stopping": {
+            "monitor": "auprc",
+            "min_delta": 0.001,
+            "patience": 20,
+            "mode": "max",
+            "verbose": 0,
+            "restore_best_weights": true
+        }
+    },
+    "data_hash": {
+        "training": "2d3e806455f151c7354ca7fe82c4e01cf311634a557078c825e36af97e46c668",
+        "testing": "27e7ee61498b894d6160020fe92cb926b33957a72ee470b8674fe51ad9468ab2"
+    }
+}
