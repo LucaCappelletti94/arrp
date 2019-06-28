@@ -47,8 +47,8 @@ class ModelTuner:
                 history.to_csv(history_path)
             history = pd.read_csv(history_path, index_col="Epochs")
             scores.append(self._calculate_score(history.iloc[-1].to_dict()))
-        clear_session()
-        gc.collect()
+            clear_session()
+            gc.collect()
         return -np.mean(scores)
 
     def tune(self, cache_dir: str, **kwargs) -> Dict:
