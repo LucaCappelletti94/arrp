@@ -124,6 +124,7 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
                     history = fit(training, testing, best_model, settings["training"])
                     save_results(best_model, history, best_parameters,
                                  "{path}/{i}".format(path=path, i=i), notifier)
+                    clear_session()
                 gc.collect()
             collect_results(path, settings["holdouts"]["quantities"][0])
-            clear_session()
+            
