@@ -48,6 +48,8 @@ class ModelTuner:
                 clear_session()
             history = pd.read_csv(history_path, index_col="Epochs")
             scores.append(self._calculate_score(history.iloc[-1].to_dict()))
+            del training_set
+            del testing_set
             gc.collect()
         return -np.mean(scores)
 
