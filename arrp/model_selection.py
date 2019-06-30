@@ -46,24 +46,24 @@ def get_path(name: str, target: str, cell_line: str, task: Dict, balance_mode: s
     )
 
 
-def parameters_hash(best_parameters: str)->str:
-    return sha256(best_parameters)
+def parameters_hash(all_parameters: Dict)->str:
+    return sha256(all_parameters)
 
 
-def is_model_cached(path: str, best_parameters: Dict)->bool:
+def is_model_cached(path: str, all_parameters: Dict)->bool:
     hash_path = "{path}/hash.json".format(path=path)
     if os.path.exists(hash_path):
         with open(hash_path, "r") as f:
-            return json.load(f)["hash"] == parameters_hash(best_parameters)
+            return json.load(f)["hash"] == parameters_hash(all_parameters)
     return False
 
 
-def save_results(model: Model, history: Dict, best_parameters: Dict, path: str, notifier: Notipy):
+def save_results(model: Model, history: Dict, all_parameters:Dict, best_parameters: Dict, path: str, notifier: Notipy):
     os.makedirs(path, exist_ok=True)
     hash_path = "{path}/hash.json".format(path=path)
     with open(hash_path, "w") as f:
         json.dump({
-            "hash": parameters_hash(best_parameters)
+            "hash": parameters_hash(all_parameters)
         }, f)
     model.save("{path}/model.h5".format(path=path))
     plot_history(history)
@@ -102,27 +102,31 @@ def model_selection(target: str, name: str, structure: Callable, space: Space):
                         "testing": sha256(testing)
                     }
                 })
-                tuner = ModelTuner(structure, model_space, inner_holdouts)
-                best_parameters = tuner.tune(
-                    cache_dir="{path}/{i}/.gaussian_cache".format(
-                        path=path, i=i),
-                    callback=[
-                        TQDMGaussianProcess(
-                            n_calls=settings["gaussian_process"]["tune"]["n_calls"]),
-                        DeltaYStopper(
-                            **settings["gaussian_process"]["early_stopping"])
-                    ],
-                    **settings["gaussian_process"]["tune"]
-                )
-                best_parameters["training"] = settings["training"]
-                if not is_model_cached("{path}/{i}".format(path=path, i=i), best_parameters):
+                all_parameters = {
+                    "space":model_space,
+                    "settings":settings
+                }
+                if not is_model_cached("{path}/{i}".format(path=path, i=i), all_parameters):
+                    tuner = ModelTuner(structure, model_space, inner_holdouts)
+                    best_parameters = tuner.tune(
+                        cache_dir="{path}/{i}/.gaussian_cache".format(
+                            path=path, i=i),
+                        callback=[
+                            TQDMGaussianProcess(
+                                n_calls=settings["gaussian_process"]["tune"]["n_calls"]),
+                            DeltaYStopper(
+                                **settings["gaussian_process"]["early_stopping"])
+                        ],
+                        **settings["gaussian_process"]["tune"]
+                    )
+                    best_parameters["training"] = settings["training"]
                     best_model = model(
                         *structure(**best_parameters["structure"]),
                         metrics=["auprc", "auroc", "accuracy", "false_negatives", "false_positives",
                                  "true_negatives", "true_positives", "precision", "recall"]
                     )
                     history = fit(training, testing, best_model, settings["training"])
-                    save_results(best_model, history, best_parameters,
+                    save_results(best_model, history, all_parameters, best_parameters,
                                  "{path}/{i}".format(path=path, i=i), notifier)
                     clear_session()
                 del training
