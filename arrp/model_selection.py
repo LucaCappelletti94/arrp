@@ -11,7 +11,6 @@ from .model_tuner import ModelTuner
 from .model_fit import fit
 from .model import model
 from .mlp import space as mlp_space
-from holdouts_generator import clear_memory_cache
 from .load import balanced_holdouts_generator, tasks_generator
 from .utils import load_settings
 from skopt.callbacks import DeltaYStopper
