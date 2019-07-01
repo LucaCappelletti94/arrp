@@ -40,6 +40,7 @@ class ModelTuner:
             )
             history_path = "{path}/history.csv".format(path=path)
             if not os.path.exists(history_path):
+                clear_session()
                 os.makedirs(path, exist_ok=True)
                 compiled_model.set_weights(weights)
                 history = pd.DataFrame(fit(training_set, testing_set, compiled_model, training))
