@@ -14,7 +14,7 @@
     "genome": "hg19",
     "holdouts":{
         "test_sizes":[0.3, 0.3],
-        "quantities":[10, 1]
+        "quantities":[10, 3]
     },
     "cell_lines":[
     	"GM12878",
@@ -40,7 +40,7 @@
     "gaussian_process":{
         "tune":{
             "acq_func":"gp_hedge",
-            "n_calls":30,
+            "n_calls":100,
             "n_random_starts":10,
             "random_state":42    
         },
